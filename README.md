@@ -1,7 +1,7 @@
 ---
 Name: Daniel Canales
-Topic: Finite Element Method
-Title: Background of the Finite Element Method and its Application in Electrical Engineering
+Topic: (Special Topics) Finite Element Methods. What is it? Why used? Applications in electrical engineering.*
+Title: Background of the Finite Element Method for Partial Differential Equations and its Application in Electrical Engineering
 ---
 # Finite Element Method and its Application in Electrical Engineering
 
@@ -15,7 +15,7 @@ Title: Background of the Finite Element Method and its Application in Electrical
 - [References](#References)
 
 ## Overview
-The finite element method (FEM) is a numerical technique used to achieve finite element analysis. More specfiically, FEM computes approximate solutions to boundary value problems of partial differential equations (PDEs). These PDEs typically arise in engineering and mathematical modeling to model, simulate, and predict the behavior of a structure (or system) in a given physical phenomenon. Examples of such physical phenomenons include heat transfer, mass transport, fluid flow, electromagnetics, and more. Given the governing equations, initial and boundary conditions, material properties of the structure, and the behavior of the structure, FEM constructs a mesh of the structure and divides it into smaller and simpler subdomains, called finite elements, connected by nodes. The behavior of the finite elements are described with equations assembled into a larger system of equations to model the entire problem. The FEM model then approximates a solution with minimal error with the use of numerical methods. Such an application of FEM is reffered to as finite element analsysis (FEA).   
+The finite element method (FEM) is a numerical technique used to achieve finite element analysis. More specfiically, FEM computes approximate solutions to boundary and initial-value problems of partial differential equations (PDEs). These PDEs typically arise in engineering and mathematical modeling to model, simulate, and predict the behavior of a structure (or system) in a given physical phenomenon. Examples of such physical phenomenons include heat transfer, mass transport, fluid flow, electromagnetics, and more. Given the governing equations, initial and boundary conditions, material properties of the structure, and the behavior of the structure, FEM constructs a mesh of the structure and divides it into smaller and simpler subdomains, called finite elements, connected by nodes. The behavior of the finite elements are described with equations assembled into a larger system of equations to model the entire problem.   
 
 ## Background
 In discussing optimization algorithms, it is important to first define the standard form of an optimization statement [3]:
