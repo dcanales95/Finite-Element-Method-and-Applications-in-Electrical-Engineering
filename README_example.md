@@ -1,7 +1,7 @@
 ---
-Name: Name Here
-Topic: Exterior Penalty Function Method
-Title: Background and Application of the Exterior Penalty Function Method
+Name: Daniel Canales
+Topic: Finite Element Method
+Title: Background of the Finite Element Method and its Application in Electrical Engineering
 ---
 # Exterior Penalty Function Method
 
