@@ -1,7 +1,3 @@
-# Finite Element Method and Applications in Electrical Engineering
-
-Finite element method (FEM) is a numerical technique used to compute appoximations of partial differential equations (PDEs). These equations typically arise in engineering and mathematical modeling to analyze and predict the behavior of a structure in a given physical phenomenon, such as heat transfer, mass transport, fluid flow, electromagnetics, and more. 
-
 ---
 Name: Daniel Canales
 Topic: Finite Element Method
@@ -19,7 +15,7 @@ Title: Background of the Finite Element Method and its Application in Electrical
 - [References](#References)
 
 ## Overview
-The exterior penalty function method belongs to a group of algorithms called "penalty function methods." This is a specific subset of constrained optimization algorithm that transforms constrained optimization problems into successive minimization problems [1]. Given a cost function and equality/inequality constraints, the Exterior Penalty function iteratively searches for the local minimum of the cost function that satisfies the provided constraints. "Exterior" refers to the infeasibility of solutions generated during iteration, which the penalty aims to counteract [2].
+The finite element method (FEM) is a numerical technique used to compute approximate solutions to boundary value problems of partial differential equations (PDEs). These PDEs typically arise in engineering and mathematical modeling to model, simulate, and predict the behavior of a structure (or system) in a given physical phenomenon. Examples of such physical phenomenons include heat transfer, mass transport, fluid flow, electromagnetics, and more. Given the governing equations, initial and boundary conditions, material properties of the structure, and the behavior of the structure, FEM constructs a mesh of the object and divides the structure into smaller and simpler subdomains, called finite elements, connected by nodes. The behavior of the finite elements are described with equations assembled into a larger system of equations to model the entire problem. Numerical methods are used to solve the system of equations and minimize error.   
 
 ## Background
 In discussing optimization algorithms, it is important to first define the standard form of an optimization statement [3]:
