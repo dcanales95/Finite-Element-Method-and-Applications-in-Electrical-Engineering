@@ -1,4 +1,4 @@
----test
+---
 Name: Daniel Canales
 Topic: (Special Topics) Finite Element Methods. What is it? Why used? Applications in electrical engineering.*
 Title: Finite Element Method for Partial Differential Equations and its Application in Analyzing Energy Harvested from a Piezoelectric Cantilever Beam
@@ -18,13 +18,14 @@ Title: Finite Element Method for Partial Differential Equations and its Applicat
 The finite element method (FEM) is a numerical technique used to achieve finite element analysis [FEA] (https://www.comsol.com/multiphysics/finite-element-method?parent=physics-pdes-numerical-042-62). More specfiically, FEM computes approximate solutions to boundary and initial-value problems of partial differential equations (PDEs). These PDEs typically arise in engineering and mathematical modeling to model, simulate, and predict the behavior of a structure (or system) in a given physical phenomenon. Examples of such physical phenomenons include heat transfer, mass transport, fluid flow, electromagnetics, and more. Given the governing equations, initial and boundary conditions, material properties of the structure, and the behavior of the structure, FEM constructs a mesh of the structure and divides it into smaller and simpler subdomains, called finite elements, connected by nodes. The behavior of the finite elements are described with equations assembled into a larger system of equations to model the entire problem, which is then solved with numerical methods. In addition to a background and overview of the steps involved in using FEM with FEA software packages, this article provides an example of using FEM to analayze energy harvested from a vibrating piezoelectric cantilever beam.
 
 ## Background
-It is important to first review the background of the following items as they are often discussed in FEM:
+In discussing FEM and its application towards FEA of a piezoelectric cantilever beam, it is important to first review the background of the following items:
 - Partial differential equations
 - Classifications of boundary conditions (BCs) for continuous systems 
 - Principle of Energy Minimization
+- Piezoelectric Effect 
 
 ### Partial Differential Equations (PDEs)
-A PDE is an equation of partial derivatives of an unknown function with respect to more than one independent variable [txtbook chapter 11]. PDEs can be described by their order and classifications. The order of a PDE is determined by the highest-order partial derivative appearing in the PDE. The classifications of first-order PDEs are linear, non-linear, and quasi-linear. For PDEs of second-order and beyond, the classification of a PDE comes down to one of following terms:
+A PDE is an equation of partial derivatives of an unknown function with respect to more than one independent variable [txtbook chapter 11]. PDEs can be described by their order and classifications. The order of a PDE is determined by the highest-order partial derivative appearing in the PDE. The classifications of first-order PDEs are linear, non-linear, and quasi-linear. For PDEs of second-order and beyond, their classification comes down to one of following terms:
 - Hyperbolic: PDEs that describe time-dependent, conservative physical processes (e.g. convection) that are not evovling toward a steady state. Their solutions neither grows nor decays over with time.
 - Parabolic: PDEs that describe time-dependent, dissipative physical processes (e.g. diffusion) that are evolving toward a steady state. Their solutions exponentially decay over time.
 - Elliptic: PDEs that describe systems that are time-dependent and have already reached a steady state. 
@@ -64,7 +65,11 @@ In general, BCs for continuous systems are classified into two types [https://ww
 - Geometric (Essential) BCs: conditions which satisfy geometric constraints
 - Force (Natural) BCs: conditions which satisfy constraints prescribed by forces and moments
 
-Consider the BCs for the above Euler-Bernoulli Beam PDE for a clamped (fixed) cantilever beam with a proof mass at the free end. Given this specific case, its PDE would have two geometric BCs on the fixed end and two force BCs on the free end with the proof mass [https://www.sciencedirect.com/science/article/abs/pii/B9780128185636000171]. The BCs are: 
+Consider the BCs for the above Euler-Bernoulli Beam PDE for a clamped (fixed) piezoelectric cantilever beam with a proof mass at the free end. Given this specific case, its PDE would have two geometric BCs on the fixed end and two force BCs on the free end with the proof mass [https://www.sciencedirect.com/science/article/abs/pii/B9780128185636000171]. 
+
+![](CantileverBeam.png)
+
+The BCs are: 
 
 $$
 \left.u\right|_{x=0}=0
@@ -87,10 +92,17 @@ where
 - **$m$** is the mass of the proof mass
 - **$\dfrac{\partial^2 u}{\partial t^2}$** is the acceleration of the proof mass
 
-The transverse displacement and its derivative would be equal to zero at the fixed end. However, the transverse displacement would satisfy the load applied by the weight of the proof mass at the free end.
+The transverse displacement and its derivative are equal to zero at the fixed end. However, the transverse displacement is equal to the load applied by the weight of the proof mass at the free end.
 
 ### Principle of Energy Minimization
 The primary driving force for FEM related to physical phenomenon is the principle of minimization of energy. When BCs are applied to the PDE of structure, the structure can tehcnically result in many configurations. However, the configuration where the total energy of the structure is at its minimum is typically the chosen configuration [https://www.simscale.com/blog/what-is-finite-element-method/]. Regarding the above example of the Euler-Bernoulli Beam PDE for a clamped cantilever beam with a proof mass at the free end, assume the structure has inital conditions such that the beam is not bent. Now, considering the BCs mentioned above (clamped at one end, and proof mass at the other end), the example's FEM should result in a solution which demonstrates that the beam will transversley vibrate due to the acceleration of the proof mass (e.g. due to gravity) and eventually come to a rest. This is because coming to a rest achieves the minimum total energy of the beam. 
+
+### Piezoelectric Effect
+The piezoelectric effect is the ability for a piezoelectric material to generate electric charge density in response to a mechanical struss, such  as pressure, vibration, or force [file:///Users/danielcanales/Desktop/Conference_4_ICME2019_BUETBangladesh.pdf]. For example, the electric chrage density generated by a piezoelectric cantilever beam is described by the following piezoelectric constitutive equation:
+
+$$
+D_3=d_{31} T_1+\varepsilon_{33}^T E_3
+$$
 
 ## Finite Element Method Overview in FEA Workflow
 From a mathmatical point of view, the below five steps overview how the FEM is working in FEA workflow:
