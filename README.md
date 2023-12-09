@@ -24,11 +24,32 @@ It is important to first define the following equations, principle, and method o
 - Discretization
 
 ### Partial Differential Equations (PDEs)
-A PDE is an equation of partial derivatives of an unknown function with respect to more than one independent variable. Many of the basic laws of science are expressed as PDEs [link to example of PDEs of laws of science). The order of a PDE is determined by the highest-order partial derivative appearing in the PDE. Once the order of a PDE has been determined, their classifications need to be determined. It is important to understand the different types of PDEs and their suitability with the use of FEM. For example, second-order linear PDEs can be described as the following:
-- Hyperbolic: PDEs that describe time-dependent, conservative physical processes (e.g. convection) that are not evovling toward a steady state.
-- Parabolic: PDEs that describe time-dependent, dissipative physical processes (e.g. diffusion) that are evolving toward a steady state.
-- Elliptic: PDEs that describe systems that are time-dependent and have already reached a steady state
-These classifications determine what initial and boundary conditions result in a well-posed problem and the characteristics of their solution (oscillatory, diminishing, exponentially decaying). 
+A PDE is an equation of partial derivatives of an unknown function with respect to more than one independent variable. Many of the basic laws of science are expressed as PDEs [link to example of PDEs of laws of science]. The order of a PDE is determined by the highest-order partial derivative appearing in the PDE. Once the order of a PDE has been determined, their classifications can be determined. It is important to understand the different types of PDEs and their suitability with the use of FEM. For example, second-order linear PDEs can be described as the following:
+- Hyperbolic: PDEs that describe time-dependent, conservative physical processes (e.g. convection) that are not evovling toward a steady state. Their solutions neither grows nor decays over with time.
+- Parabolic: PDEs that describe time-dependent, dissipative physical processes (e.g. diffusion) that are evolving toward a steady state. Their solutions exponentially decay over time.
+- Elliptic: PDEs that describe systems that are time-dependent and have already reached a steady state. 
+
+Such characteristics for a given PDE determine what inital and boundary conditions result in a well-posted problem. For example, below is the one-dimensional heat equation, a PDE which describtes the the variation of temperature with respective to time and space in a one-dimensional object:
+$$
+\frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}
+$$
+
+with given initial conditions
+$$
+u(0,x) = f(x)
+u_t(0,x) = g(x)
+0 \lt x \lt L,
+\]$$
+
+
+and boundary conditions
+
+
+where: 
+  - $\( u(x,t) \)$ is the temperature distribution in the material as a function of space $(\(x\))$ and time $(\(t\))$,
+  - $\( \frac{\partial u}{\partial t} \)$ is the partial derivative of $u$ with respect to time, representing the rate of change of temperature with respect to time,
+  - $\( \frac{\partial^2 u}{\partial x^2} \)$ is the second partial derivative of $u$ with respect to $x$, representing the spatial curvature of the temperature distribution,
+  - $\( \alpha \)$ is the thermal diffusivity, which depends on the material's thermal conductivity, density, and specific heat.
 
 ### Principle of Energy Minimization
 
