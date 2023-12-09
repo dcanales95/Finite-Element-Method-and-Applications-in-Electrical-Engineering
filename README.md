@@ -30,33 +30,54 @@ A PDE is an equation of partial derivatives of an unknown function with respect 
 - Parabolic: PDEs that describe time-dependent, dissipative physical processes (e.g. diffusion) that are evolving toward a steady state. Their solutions exponentially decay over time.
 - Elliptic: PDEs that describe systems that are time-dependent and have already reached a steady state. 
 
-For example, below is the one-dimensional heat equation, a PDE which describtes the the variation of temperature with respective to time and space in a one-dimensional object:
+For example, consider the Euler-Bernoulli Beam PDE representing the transverse displacement, **$u(x,t)$**, of a thin, clamped (fixed) cantilever beam with a proof mass at the free end: 
+
 $$
-\frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}
+EI \dfrac{\partial^4 u}{\partial x^4} + m\dfrac{\partial^2 u}{\partial t^2}= 0
 $$
 
-with given initial conditions
+where
+
+- **$E$** is the Young's modulus of the beam material
+- **$I$** is the moment of inertia of the beam's cross-sectional area
+- **$u(x,t)$** is the transverse displacement
+- **$m$** is the mass of the proof mass
+- **$\dfrac{\partial^2 u}{\partial t^2}$** is the acceleration of the proof mass
+
+<!-- The PDE representing the electric potential induced across the thickness of the beam, **$v(t)$**, as a function of spatial coordinate **$x$** and time **$t$** is shown below:
+
 $$
-u(0,x) = f(x)
-u_t(0,x) = g(x)
-0 \lt x \lt L,
-\]$$
+\varepsilon A_p \frac{\partial^2 v}{\partial t^2} + g v = d_{31} A_p \frac{\partial u}{\partial x}
+$$
 
+where 
 
-and boundary conditions
+- **$\varepsilon$** is the permittivity of the piezoelectric material,
+- **$A_p$** is the cross-sectional area of the piezoelectric material
+- **$g$** is the electrical conductance
+- **$v(x,t)$** is the electricl potential induced across the thickness of the beam
+- **$d_{31}$** is the piezoelectric coupling coefficient.
+-->
 
-where: 
-  - $\( u(x,t) \)$ is the temperature distribution in the material as a function of space $(\(x\))$ and time $(\(t\))$,
-  - $\( \frac{\partial u}{\partial t} \)$ is the partial derivative of $u$ with respect to time, representing the rate of change of temperature with respect to time,
-  - $\( \frac{\partial^2 u}{\partial x^2} \)$ is the second partial derivative of $u$ with respect to $x$, representing the spatial curvature of the temperature distribution,
-  - $\( \alpha \)$ is the thermal diffusivity, which depends on the material's thermal conductivity, density, and specific heat.
+In regards to order and classifications, the above PDE is a fourth order, hyperbolic PDE.
+
 
 ### Classifications of boundary conditions (BCs) for continuous systems 
 In general, BCs for continuous systems are classified into two types:
 - Geometric (Essential) BCs: conditions which satisfy geometric constraints
 - Force (Natural) BCs: conditions which satisfy constraints prescribes by forces and moments
 
-For example, if the FEM was applied to describe the transverse displacement, **$u(x)$**, of a cantilever beam, then its PDE would have a geometric BC on the fixed end and a force BC on the free end. The transverse displacement and its derivative would be equal to zero at the fixed end (**$u(x=0)=0$** and **$u^{'}(x=0)=0$**). However, the transverse displacement would satisfy a moment boundary condition at the free end, such as **$EI\dfrac{\partial ^{2} u}{\partial x^2}(x=L)$**.
+Consider the BCs for the above Euler-Bernoulli Beam PDE. Its PDE would have geometric BCs on the fixed end and both geometric and force BCs on the free end with the proof mass. The geometric BCs on the fixed end are: 
+
+$$
+\left.w\right|_{x=0}=0 \\
+\left.\frac{\partial w}{\partial x}\right|_{x=0}=0
+$$
+
+\quad ;\left.\quad \frac{\partial w}{\partial x}\right|_{x=0}=0 \quad
+(fixed end)
+
+The transverse displacement and its derivative would be equal to zero at the fixed end (**$u(x=0)=0$** and **$u^{'}(x=0)=0$**). However, the transverse displacement would satisfy a moment boundary condition at the free end, such as **$EI\dfrac{\partial ^{2} u}{\partial x^2}(x=L)$**.
 
 
 ### Principle of Energy Minimization
