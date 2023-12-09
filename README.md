@@ -117,11 +117,14 @@ $$
 \mathrm{I}(\varrho)=\int_{\Omega} \varrho(\mathbf{x}) \mathrm{d} \Omega \approx \int_{\Omega^{\mathrm{h}}} \varrho(\mathbf{x}) \mathrm{d} \Omega=\sum_{\mathrm{e}=0}^{\mathrm{N}-1} \int_{\square^{\mathrm{e}}} \varrho(\mathbf{x}) \mathrm{d} \Omega=\sum_{\mathrm{e}=0}^{\mathrm{N}-1} \mathrm{I}_{\square^e}
 $$
 
+The integrals over the elements can be achieved by first performing a transformation of coordinates. By changing the coordinates of each element from the global coordinate system to that of a local coordinate system, the integration can be done on a reference element which will be the same for all physical elements, as shown below. 
+
+
+
 where **$\varrho(\mathbf{x})$** is the function to be integrated, **$\Omega$** is the integration domain, **$\Omega^{\mathrm{h}}$** is the approximated discretization of **$\Omega$**, and **$\mathrm{I}_{\square^e}$** is the integral over the element **$\square^e$**.
 
 <img src="Mesh.png" width="40%" height="30%">
-
-
+<img src="IntegrateElement.png" width="40%" height="30%">
 
 the integrand of the weak form is evaluated at a finite set of points and a weighted sum of these values is used to approximate the integral over all the elements [textbook, http://mofem.eng.gla.ac.uk/mofem/html/integration.html]. Guass quadtratures and Newton Cotes quadratures are examples of such integration schemes used to discretize structures. Below are images of the mesh of a beam, examples of quadrature elements (second-order elements) used to mesh geometries. 
 
