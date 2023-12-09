@@ -30,7 +30,7 @@ A PDE is an equation of partial derivatives of an unknown function with respect 
 - Parabolic: PDEs that describe time-dependent, dissipative physical processes (e.g. diffusion) that are evolving toward a steady state. Their solutions exponentially decay over time.
 - Elliptic: PDEs that describe systems that are time-dependent and have already reached a steady state. 
 
-Such characteristics for a given PDE determine what inital and boundary conditions result in a well-posted problem. For example, below is the one-dimensional heat equation, a PDE which describtes the the variation of temperature with respective to time and space in a one-dimensional object:
+For example, below is the one-dimensional heat equation, a PDE which describtes the the variation of temperature with respective to time and space in a one-dimensional object:
 $$
 \frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}
 $$
@@ -55,7 +55,8 @@ where:
 In general, BCs for continuous systems are classified into two types:
 - Geometric (Essential) BCs: conditions which satisfy geometric constraints
 - Force (Natural) BCs: conditions which satisfy constraints prescribes by forces and moments
-For example, if the FEM was applied to describe the transverse displacement, **$u(x)$**, of a cantilever beam, then its PDE would have a geometric BC on the fixed end and a force BC on the free end. The transverse displacement and its derivative would be equal to zero at the fixed end (**$u(x=0)=0$** and **$u^'(x=0)=0$**. However, on the free end, the transverse displacement must satisfy free and moment balances
+
+For example, if the FEM was applied to describe the transverse displacement, **$u(x)$**, of a cantilever beam, then its PDE would have a geometric BC on the fixed end and a force BC on the free end. The transverse displacement and its derivative would be equal to zero at the fixed end (**$u(x=0)=0$** and **$u^{'}(x=0)=0$**). However, the transverse displacement would satisfy a moment boundary condition at the free end, such as **$EI\dfrac{\partial ^{2} u}{\partial x^2}(x=L)$**.
 
 
 ### Principle of Energy Minimization
