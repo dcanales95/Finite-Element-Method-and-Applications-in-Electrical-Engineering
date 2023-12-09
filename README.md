@@ -1,9 +1,9 @@
 ---
 Name: Daniel Canales
 Topic: (Special Topics) Finite Element Methods. What is it? Why used? Applications in electrical engineering.*
-Title: Finite Element Method for Partial Differential Equations and its Application in Analyzing Energy Harvested from a Piezoelectric Cantilever Beam
+Title: Finite Element Method in Finite Element Analysis Workflow and its Application in Analyzing Energy Harvested from a Piezoelectric Cantilever Beam
 ---
-# Finite Element Method for Partial Differential Equations and its Application in Analyzing Energy Harvested from a Piezoelectric Cantilever Beam
+# Finite Element Method in Finite Element Analysis Workflow and its Application in Analyzing Energy Harvested from a Piezoelectric Cantilever Beam
 
 ## Table of Contents
 - [Overview](#Overview)
@@ -101,7 +101,7 @@ $$
 where **$D_3$** is the electrical charge density, **$d_{31}$** is the piezoelectric strain constant, **$T_1$** is the stress generated in the length direction of the piezoelectric layer, **$\varepsilon_{33}$** is the dielectric constant of the piezoelectric material under constant stress conditions, and **$E_3$** is the electric field developed in the “3” direction. From the above equation, it is clear that the charge density is proportional to the developed stress. 
 
 ## Finite Element Method Overview in FEA Workflow
-From a mathmatical point of view, the below five steps overview how the FEM is working in FEA workflow:
+FEA software packages are computer programs that use FEM to analyze how a material or design responds to certain forces, such as vibration, heat, fluid flow, electromagnetic forces, and other physical effects [https://www.autodesk.com/solutions/simulation/finite-element-analysis]. Some common FEA software packages include ANSYS [https://www.ansys.com/], Abaqus FEA [https://www.3ds.com/products-services/simulia/], COMSOL Multiphysics [https://www.comsol.com/], and SIMSCALE [https://www.simscale.com/]. From a mathmatical point of view, the below five steps overview how the FEM works within these software tools [https://www.jousefmurad.com/fem/the-finite-element-method-beginners-guide/#feaworkflowFFA]:
 1) Model preparation
 2) Element formulation
 3) Assembly
@@ -109,7 +109,13 @@ From a mathmatical point of view, the below five steps overview how the FEM is w
 5) Post-processing
 
 ### 1. Model preparation
-Problem formulation consists of creating the geometry of your structure, definiting material properties, creating initial and boundary conditions, defining other conditions such as contact behaviour, and discretisation of the geometry of your structure. 
+Problem formulation consists of creating the geometry of your structure, defining material properties, creating initial and boundary conditions, defining other conditions such as contact behaviour, and discretisation of the geometry of your structure. The discretization of the geometry is done behind the scenes. 
+
+To achieve discretization of the sturcture, its PDE needs to be represented in its integral form, also known as its weak form [https://www.simscale.com/blog/what-is-finite-element-method/, https://www.comsol.com/multiphysics/finite-element-method?parent=physics-pdes-numerical-042-62]. Once the weak form has been set up, it can be discretized. Numerical integration schemes are used on the integrations in the weak form to divide its integration domain into elements with primitive shapes. In simple terms, the integrand of the weak form is evaluated at a finite set of points and a weighted sum of these values is used to approximate the integral [textbook].Guass quadtratures and Newton Cotes quadratures are examples of such integration schemes used to discretize structures. Below are images of the mesh of a beam and examples of quadrature elements (second-order elements) used to mesh geometries. 
+
+![](MeshBeam.png)
+
+![](MeshElements.png)
 
 ### 2. Element formulation
 Element formulation is the development of equations for the elements. These equations are set up as the PDE in its weak form. 
