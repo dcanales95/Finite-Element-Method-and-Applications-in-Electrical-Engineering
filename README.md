@@ -1,9 +1,9 @@
 ---
 Name: Daniel Canales
 Topic: (Special Topics) Finite Element Methods. What is it? Why used? Applications in electrical engineering.*
-Title: Finite Element Method for Partial Differential Equations and its Application in Analyzing Energy Harvested from Piezoelectric Cantilever Beams
+Title: Finite Element Method for Partial Differential Equations and its Application in Analyzing Energy Harvested from a Piezoelectric Cantilever Beam
 ---
-# Finite Element Method for Partial Differential Equations and its Application in Analyzing Energy Harvested from Piezoelectric Cantilever Beams
+# Finite Element Method for Partial Differential Equations and its Application in Analyzing Energy Harvested from a Piezoelectric Cantilever Beam
 
 ## Table of Contents
 - [Overview](#Overview)
@@ -15,7 +15,7 @@ Title: Finite Element Method for Partial Differential Equations and its Applicat
 - [References](#References)
 
 ## Overview
-The finite element method (FEM) is a numerical technique used to achieve finite element analysis [FEA] (https://www.comsol.com/multiphysics/finite-element-method?parent=physics-pdes-numerical-042-62). More specfiically, FEM computes approximate solutions to boundary and initial-value problems of partial differential equations (PDEs). These PDEs typically arise in engineering and mathematical modeling to model, simulate, and predict the behavior of a structure (or system) in a given physical phenomenon. Examples of such physical phenomenons include heat transfer, mass transport, fluid flow, electromagnetics, and more. Given the governing equations, initial and boundary conditions, material properties of the structure, and the behavior of the structure, FEM constructs a mesh of the structure and divides it into smaller and simpler subdomains, called finite elements, connected by nodes. The behavior of the finite elements are described with equations assembled into a larger system of equations to model the entire problem, which is then solved with numerical methods. In addition to a background and overview of the steps involved in using FEM with FEA software packages, this article provides an example of using FEM to analayze energy harvested from piezoelectric cantilever beams, in which mechanical vibration energy of the beam is converted into electrical energy. [file:///Users/danielcanales/Desktop/Conference_4_ICME2019_BUETBangladesh.pdf].
+The finite element method (FEM) is a numerical technique used to achieve finite element analysis [FEA] (https://www.comsol.com/multiphysics/finite-element-method?parent=physics-pdes-numerical-042-62). More specfiically, FEM computes approximate solutions to boundary and initial-value problems of partial differential equations (PDEs). These PDEs typically arise in engineering and mathematical modeling to model, simulate, and predict the behavior of a structure (or system) in a given physical phenomenon. Examples of such physical phenomenons include heat transfer, mass transport, fluid flow, electromagnetics, and more. Given the governing equations, initial and boundary conditions, material properties of the structure, and the behavior of the structure, FEM constructs a mesh of the structure and divides it into smaller and simpler subdomains, called finite elements, connected by nodes. The behavior of the finite elements are described with equations assembled into a larger system of equations to model the entire problem, which is then solved with numerical methods. In addition to a background and overview of the steps involved in using FEM with FEA software packages, this article provides an example of using FEM to analayze energy harvested from a vibrating piezoelectric cantilever beam.
 
 ## Background
 It is important to first review the background of the following items as they are often discussed in FEM:
