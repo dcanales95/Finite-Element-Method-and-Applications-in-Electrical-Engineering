@@ -20,6 +20,7 @@ The finite element method (FEM) is a numerical technique used to achieve finite 
 ## Background
 It is important to first define the following equations, principle, and method often discussed in FEM:
 - Partial differential equations
+- Classifications of boundary conditions (BCs) for continuous systems 
 - Principle of Energy Minimization
 - Discretization
 
@@ -49,6 +50,13 @@ where:
   - $\( \frac{\partial u}{\partial t} \)$ is the partial derivative of $u$ with respect to time, representing the rate of change of temperature with respect to time,
   - $\( \frac{\partial^2 u}{\partial x^2} \)$ is the second partial derivative of $u$ with respect to $x$, representing the spatial curvature of the temperature distribution,
   - $\( \alpha \)$ is the thermal diffusivity, which depends on the material's thermal conductivity, density, and specific heat.
+
+### Classifications of boundary conditions (BCs) for continuous systems 
+In general, BCs for continuous systems are classified into two types:
+- Geometric (Essential) BCs: conditions which satisfy geometric constraints
+- Force (Natural) BCs: conditions which satisfy constraints prescribes by forces and moments
+For example, if the FEM was applied to describe the transverse displacement, **$u(x)$**, of a cantilever beam, then its PDE would have a geometric BC on the fixed end and a force BC on the free end. The transverse displacement and its derivative would be equal to zero at the fixed end (**$u(x=0)=0$** and **$u^'(x=0)=0$**. However, on the free end, the transverse displacement must satisfy free and moment balances
+
 
 ### Principle of Energy Minimization
 
