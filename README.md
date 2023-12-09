@@ -8,7 +8,7 @@ Title: Background of the Finite Element Method for Partial Differential Equation
 ## Table of Contents
 - [Overview](#Overview)
 - [Background](#Background)
-    - [Partial Differential Equations (PDEs)](#Partial Differential Equations (PDEs)) 
+    - [Partial Differential Equations (PDEs)](##Partial Differential Equations (PDEs)) 
 - [Finite Element Method Overview](#Finite-Element-Method-Overview)
 - [Common Applications](#Common-Applications)
 - [Formulation](#Formulation)
