@@ -15,7 +15,7 @@ Title: Background of the Finite Element Method for Partial Differential Equation
 - [References](#References)
 
 ## Overview
-The finite element method (FEM) is a numerical technique used to achieve finite element analysis. More specfiically, FEM computes approximate solutions to boundary and initial-value problems of partial differential equations (PDEs). These PDEs typically arise in engineering and mathematical modeling to model, simulate, and predict the behavior of a structure (or system) in a given physical phenomenon. Examples of such physical phenomenons include heat transfer, mass transport, fluid flow, electromagnetics, and more. Given the governing equations, initial and boundary conditions, material properties of the structure, and the behavior of the structure, FEM constructs a mesh of the structure and divides it into smaller and simpler subdomains, called finite elements, connected by nodes. The behavior of the finite elements are described with equations assembled into a larger system of equations to model the entire problem, which is then solved with numerical methods. In addition to a background, history, and overview of the steps involved in FEM, this article provides an example of applying FEM to analyze piezoelectricity, the electromechanical phenomenon in which certain materials generate an electric charge in response to mechanical stress or strain.
+The finite element method (FEM) is a numerical technique used to achieve finite element analysis (https://www.comsol.com/multiphysics/finite-element-method?parent=physics-pdes-numerical-042-62). More specfiically, FEM computes approximate solutions to boundary and initial-value problems of partial differential equations (PDEs). These PDEs typically arise in engineering and mathematical modeling to model, simulate, and predict the behavior of a structure (or system) in a given physical phenomenon. Examples of such physical phenomenons include heat transfer, mass transport, fluid flow, electromagnetics, and more. Given the governing equations, initial and boundary conditions, material properties of the structure, and the behavior of the structure, FEM constructs a mesh of the structure and divides it into smaller and simpler subdomains, called finite elements, connected by nodes. The behavior of the finite elements are described with equations assembled into a larger system of equations to model the entire problem, which is then solved with numerical methods. In addition to a background, history, and overview of the steps involved in FEM, this article provides an example of applying FEM to analyze piezoelectricity, the electromechanical phenomenon in which certain materials generate an electric charge in response to mechanical stress or strain.
 
 ## Background
 It is important to first define the following equations, principle, and method often discussed in FEM:
@@ -25,24 +25,22 @@ It is important to first define the following equations, principle, and method o
 - Discretization
 
 ### Partial Differential Equations (PDEs)
-A PDE is an equation of partial derivatives of an unknown function with respect to more than one independent variable. Many of the basic laws of science are expressed as PDEs [link to example of PDEs of laws of science]. The order of a PDE is determined by the highest-order partial derivative appearing in the PDE. Once the order of a PDE has been determined, their classifications can be determined. It is important to understand the different types of PDEs and their suitability with the use of FEM. For example, second-order linear PDEs can be described as the following:
+A PDE is an equation of partial derivatives of an unknown function with respect to more than one independent variable [txtbook chapter 11]. PDEs can be described by their order and classifications. The order of a PDE is determined by the highest-order partial derivative appearing in the PDE. The classifications of first-order PDEs are linear, non-linear, quasi-linear. For PDEs of second-order and beyond, the classification of a PDE comes down to one of following terms:
 - Hyperbolic: PDEs that describe time-dependent, conservative physical processes (e.g. convection) that are not evovling toward a steady state. Their solutions neither grows nor decays over with time.
 - Parabolic: PDEs that describe time-dependent, dissipative physical processes (e.g. diffusion) that are evolving toward a steady state. Their solutions exponentially decay over time.
 - Elliptic: PDEs that describe systems that are time-dependent and have already reached a steady state. 
 
-For example, consider the Euler-Bernoulli Beam PDE representing the transverse displacement, **$u(x,t)$**, of a thin, clamped (fixed) cantilever beam with a proof mass at the free end: 
+For example, consider the Euler-Bernoulli Beam PDE representing the transverse displacement, **$u(x,t)$**, of a beam (assume the PDE corresponds to small deflections of a beam that is subject to lateral loads only and ignore the effects of shear deformations and rotary intertia) [https://www.sciencedirect.com/science/article/abs/pii/B9780128185636000171]: 
 
 $$
-EI \dfrac{\partial^4 u}{\partial x^4} + m\dfrac{\partial^2 u}{\partial t^2}= 0
+EI \dfrac{\partial^4 u}{\partial x^4}= 0
 $$
 
 where
 
 - **$E$** is the Young's modulus of the beam material
 - **$I$** is the moment of inertia of the beam's cross-sectional area
-- **$u(x,t)$** is the transverse displacement
-- **$m$** is the mass of the proof mass
-- **$\dfrac{\partial^2 u}{\partial t^2}$** is the acceleration of the proof mass
+- **$u=u(x,t)$** is the transverse displacement
 
 <!-- The PDE representing the electric potential induced across the thickness of the beam, **$v(t)$**, as a function of spatial coordinate **$x$** and time **$t$** is shown below:
 
@@ -59,26 +57,37 @@ where
 - **$d_{31}$** is the piezoelectric coupling coefficient.
 -->
 
-In regards to order and classifications, the above PDE is a fourth order, hyperbolic PDE.
+In regards to order and classifications, the above PDE is a fourth order, hyperbolic PDE. Note, the PDE is characterized as a hyperbolic function since the beam expresses vibrational behavior which can be analyzed using the wave equation, which is a hyperbolic PDE [https://www.sciencedirect.com/science/article/abs/pii/0022460X91904015]. 
 
 
 ### Classifications of boundary conditions (BCs) for continuous systems 
-In general, BCs for continuous systems are classified into two types:
+In general, BCs for continuous systems are classified into two types [https://www.jousefmurad.com/fem/the-finite-element-method-beginners-guide/]:
 - Geometric (Essential) BCs: conditions which satisfy geometric constraints
-- Force (Natural) BCs: conditions which satisfy constraints prescribes by forces and moments
+- Force (Natural) BCs: conditions which satisfy constraints prescribed by forces and moments
 
-Consider the BCs for the above Euler-Bernoulli Beam PDE. Its PDE would have geometric BCs on the fixed end and both geometric and force BCs on the free end with the proof mass. The geometric BCs on the fixed end are: 
+Consider the BCs for the above Euler-Bernoulli Beam PDE for a clamped (fixed) cantilever beam with a proof mass at the free end. Given this specific case, its PDE would have two geometric BCs on the fixed end and two force BCs on the free end with the proof mass [https://www.sciencedirect.com/science/article/abs/pii/B9780128185636000171]. The BCs are: 
 
 $$
-\left.w\right|_{x=0}=0 \\
-\left.\frac{\partial w}{\partial x}\right|_{x=0}=0
+\left.u\right|_{x=0}=0
 $$
 
-\quad ;\left.\quad \frac{\partial w}{\partial x}\right|_{x=0}=0 \quad
-(fixed end)
+$$
+\left.\dfrac{\partial u}{\partial x}\right|_{x=0}=0
+$$
 
-The transverse displacement and its derivative would be equal to zero at the fixed end (**$u(x=0)=0$** and **$u^{'}(x=0)=0$**). However, the transverse displacement would satisfy a moment boundary condition at the free end, such as **$EI\dfrac{\partial ^{2} u}{\partial x^2}(x=L)$**.
+$$
+\left.\dfrac{\partial^2 u}{\partial x^2}\right|_{x=L}=0
+$$
 
+$$
+\left.EI\dfrac{\partial^3 u}{\partial x^3}\right|_{x=L} = m\dfrac{\partial^2 u}{\partial t^2}
+$$
+
+- **$L$** is the length of the beam
+- **$m$** is the mass of the proof mass
+- **$\dfrac{\partial^2 u}{\partial t^2}$** is the acceleration of the proof mass
+
+The transverse displacement and its derivative would be equal to zero at the fixed end. However, the transverse displacement would satisfy the load applied by the weight of the proof mass at the free end.
 
 ### Principle of Energy Minimization
 
