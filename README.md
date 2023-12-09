@@ -8,7 +8,6 @@ Title: Background of the Finite Element Method for Partial Differential Equation
 ## Table of Contents
 - [Overview](#Overview)
 - [Background](#Background)
-    - [Partial Differential Equations (PDEs)](##Partial Differential Equations (PDEs)) 
 - [Finite Element Method Overview](#Finite-Element-Method-Overview)
 - [Common Applications](#Common-Applications)
 - [Formulation](#Formulation)
@@ -23,7 +22,6 @@ It is important to first define the following equations, principle, and method o
 - Partial differential equations
 - Classifications of boundary conditions (BCs) for continuous systems 
 - Principle of Energy Minimization
-- Discretization
 
 ### Partial Differential Equations (PDEs)
 A PDE is an equation of partial derivatives of an unknown function with respect to more than one independent variable [txtbook chapter 11]. PDEs can be described by their order and classifications. The order of a PDE is determined by the highest-order partial derivative appearing in the PDE. The classifications of first-order PDEs are linear, non-linear, quasi-linear. For PDEs of second-order and beyond, the classification of a PDE comes down to one of following terms:
@@ -91,8 +89,7 @@ $$
 The transverse displacement and its derivative would be equal to zero at the fixed end. However, the transverse displacement would satisfy the load applied by the weight of the proof mass at the free end.
 
 ### Principle of Energy Minimization
-
-### Discretization
+The primary driving force for FEM related to physical phenomenon is the principle of minimization of energy. When BCs are applied to the PDE of structure, the structure can tehcnically result in many configurations. However, the configuration where the total energy of the structure is at its minimum is typically the chosen configuration [https://www.simscale.com/blog/what-is-finite-element-method/]. Regarding the above example of the Euler-Bernoulli Beam PDE for a clamped cantilever beam with a proof mass at the free end, assume the structure has inital conditions such that the beam is not bent. Now, considering the BCs mentioned above (clamped at one end, and proof mass at the other end), the example's FEM should result in a solution which demonstrates that the beam will transversley vibrate due to the acceleration of the proof mass (e.g. due to gravity) and eventually come to a rest. This is because coming to a rest achieves the minimum total energy of the beam. 
 
 - FEM solvers
 - Examples of types of FEM
