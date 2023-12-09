@@ -93,7 +93,13 @@ The transverse displacement and its derivative would be equal to zero at the fix
 The primary driving force for FEM related to physical phenomenon is the principle of minimization of energy. When BCs are applied to the PDE of structure, the structure can tehcnically result in many configurations. However, the configuration where the total energy of the structure is at its minimum is typically the chosen configuration [https://www.simscale.com/blog/what-is-finite-element-method/]. Regarding the above example of the Euler-Bernoulli Beam PDE for a clamped cantilever beam with a proof mass at the free end, assume the structure has inital conditions such that the beam is not bent. Now, considering the BCs mentioned above (clamped at one end, and proof mass at the other end), the example's FEM should result in a solution which demonstrates that the beam will transversley vibrate due to the acceleration of the proof mass (e.g. due to gravity) and eventually come to a rest. This is because coming to a rest achieves the minimum total energy of the beam. 
 
 ## Finite Element Method Overview in FEA Workflow
-From a methmatical point of view, the approach of FEM software packages can be divded into five essential steps:
+From a mathmatical point of view, the below five steps overview how the FEM is working in FEA workflow:
+1) Model preparation
+2) Element formulation
+3) Assembly
+4) Solving systems of linear equations
+5) Post-processing
+
 1) Problem Formulation
 2) Weak Formulation
 3) Discretization
