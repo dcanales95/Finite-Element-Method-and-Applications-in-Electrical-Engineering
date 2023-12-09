@@ -63,7 +63,7 @@ In general, BCs for continuous systems are classified into two types [https://ww
 
 Consider the BCs for the above Euler-Bernoulli Beam PDE for a clamped (fixed) piezoelectric cantilever beam with a proof mass at the free end [file:///Users/danielcanales/Desktop/Conference_4_ICME2019_BUETBangladesh.pdf]. Given this specific case, its PDE would have two geometric BCs on the fixed end and two force BCs on the free end with the proof mass [https://www.sciencedirect.com/science/article/abs/pii/B9780128185636000171]. 
 
-![](PzCantileverBeam.png)
+<img src="PzCantileverBeam.png" width="40%" height="30%">
 
 The BCs are: 
 
@@ -109,16 +109,27 @@ FEA software packages are computer programs that use FEM to analyze how a materi
 5) Post-processing
 
 ### 1. Model preparation
-Problem formulation consists of creating the geometry of your structure, defining material properties, creating initial and boundary conditions, defining other conditions such as contact behaviour, and discretisation of the geometry of your structure. The discretization of the geometry is done behind the scenes. 
+Problem formulation consists of creating the geometry of your structure, defining material properties, creating initial and boundary conditions, defining other conditions such as contact behaviour, and discretisation of the geometry of your structure. It is important to note that discretization of the geometry is done behind the scenes. 
 
-To achieve discretization of the sturcture, its PDE needs to be represented in its integral form, also known as its weak form [https://www.simscale.com/blog/what-is-finite-element-method/, https://www.comsol.com/multiphysics/finite-element-method?parent=physics-pdes-numerical-042-62]. Once the weak form has been set up, it can be discretized. Numerical integration schemes are used on the integrations in the weak form to divide its integration domain into elements with primitive shapes. In simple terms, the integrand of the weak form is evaluated at a finite set of points and a weighted sum of these values is used to approximate the integral [textbook].Guass quadtratures and Newton Cotes quadratures are examples of such integration schemes used to discretize structures. Below are images of the mesh of a beam and examples of quadrature elements (second-order elements) used to mesh geometries. 
+To achieve discretization of the sturcture, its PDE needs to be represented in its integral form, also known as its weak form [https://www.simscale.com/blog/what-is-finite-element-method/, https://www.comsol.com/multiphysics/finite-element-method?parent=physics-pdes-numerical-042-62]. Once the weak form has been set up, it can be discretized. In simplist terms, numerical integration schemes are used on the integrations in the weak form to divide its integration domain over the structure into non-overlapping elements with primitive shapes. Therefore, the integral functions from the weak form can be computed approximately as a sum of integrals over all the elements:
 
-![](MeshBeam.png)
+$$
+\mathrm{I}(\varrho)=\int_{\Omega} \varrho(\mathbf{x}) \mathrm{d} \Omega \approx \int_{\Omega^{\mathrm{h}}} \varrho(\mathbf{x}) \mathrm{d} \Omega=\sum_{\mathrm{e}=0}^{\mathrm{N}-1} \int_{\square^{\mathrm{e}}} \varrho(\mathbf{x}) \mathrm{d} \Omega=\sum_{\mathrm{e}=0}^{\mathrm{N}-1} \mathrm{I}_{\square^e}
+$$
 
-![](MeshElements.png)
+where **$\varrho(\mathbf{x})$** is the function to be integrated, **$\Omega$** is the integration domain, **$\Omega^{\mathrm{h}}$** is the approximated discretization of **$\Omega$**, and **$\mathrm{I}_{\square^e}$** is the integral over the element **$\square^e$**.
+
+<img src="Mesh.png" width="40%" height="30%">
+
+
+
+the integrand of the weak form is evaluated at a finite set of points and a weighted sum of these values is used to approximate the integral over all the elements [textbook, http://mofem.eng.gla.ac.uk/mofem/html/integration.html]. Guass quadtratures and Newton Cotes quadratures are examples of such integration schemes used to discretize structures. Below are images of the mesh of a beam, examples of quadrature elements (second-order elements) used to mesh geometries. 
+
+<img src="MeshBeam.png" width="40%" height="30%">
+<img src="MeshElements.png" width="40%" height="30%">
 
 ### 2. Element formulation
-Element formulation is the development of equations for the elements. These equations are set up as the PDE in its weak form. 
+Element formulation is the integral over a single element. The first steps to achieve this is to change coordinates for earch element from the original global coordinate system to a local coordinate system using the Jacobian of transformation of cordinates. As done with meshing the geometry, the integral over a single element is computed via numerical integration, thus resulting in a finite set of points and a weighted sum of these values. 
 
 ### 3. Assembly
 Assembly is obtaining equations for the entire system from the equations for one element.
@@ -128,18 +139,6 @@ The system of linear equations are solved via direct or iterative numerical meth
 
 ### 5. Post-processing
 Quantities of interst are determined and visualizations of their response are obtained. 
-
-1) Problem Formulation
-2) Weak Formulation
-3) Discretization
-4) Element Equations
-5) Assembly
-6) Boundary Conditions
-7) Solution of Linear Systems
-  - FEM solvers
-  - Examples of types of FEM
-9) Post processing
-10) Mesh Adaptive Refinement'
 
 ## Application of FEM in Analyzing Piezoelectricity 
 The exterior penalty function method has various applications that take advantage of its robust and convenient computation of optimization under constraints. One of the primary limitations on use cases for the exterior method is that the intermediate iterations present infeasible solutions. This can make the method unsuitable for applications such as optimal control, where intermediate results are incorporated into the system’s behavior, and violation of constraints would negatively impact the response [2]. The following are *some* of the most pertinent applications of the exterior penalty method.
