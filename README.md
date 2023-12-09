@@ -44,7 +44,6 @@ u_t(0,x) = g(x)
 
 and boundary conditions
 
-
 where: 
   - $\( u(x,t) \)$ is the temperature distribution in the material as a function of space $(\(x\))$ and time $(\(t\))$,
   - $\( \frac{\partial u}{\partial t} \)$ is the partial derivative of $u$ with respect to time, representing the rate of change of temperature with respect to time,
