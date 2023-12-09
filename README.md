@@ -1,35 +1,35 @@
 ---
 Name: Daniel Canales
 Topic: (Special Topics) Finite Element Methods. What is it? Why used? Applications in electrical engineering.*
-Title: Background of the Finite Element Method for Partial Differential Equations and its Application in Analyzing Piezoelectricity
+Title: Finite Element Method for Partial Differential Equations and its Application in Analyzing Energy Harvested from Piezoelectric Cantilever Beams
 ---
-# Finite Element Method for Partial Differential Equations and its Application in Analyzing Piezoelectricity 
+# Finite Element Method for Partial Differential Equations and its Application in Analyzing Energy Harvested from Piezoelectric Cantilever Beams
 
 ## Table of Contents
 - [Overview](#Overview)
 - [Background](#Background)
-- [Finite Element Method Overview](#Finite-Element-Method-Overview)
+- [Finite Element Method Overview in FEA Workflow](#Finite-Element-Method-Overview-in-FEA-Workflow)
 - [Common Applications](#Common-Applications)
 - [Formulation](#Formulation)
 - [Penalty Function Options](#Penalty-Function-Options)
 - [References](#References)
 
 ## Overview
-The finite element method (FEM) is a numerical technique used to achieve finite element analysis (https://www.comsol.com/multiphysics/finite-element-method?parent=physics-pdes-numerical-042-62). More specfiically, FEM computes approximate solutions to boundary and initial-value problems of partial differential equations (PDEs). These PDEs typically arise in engineering and mathematical modeling to model, simulate, and predict the behavior of a structure (or system) in a given physical phenomenon. Examples of such physical phenomenons include heat transfer, mass transport, fluid flow, electromagnetics, and more. Given the governing equations, initial and boundary conditions, material properties of the structure, and the behavior of the structure, FEM constructs a mesh of the structure and divides it into smaller and simpler subdomains, called finite elements, connected by nodes. The behavior of the finite elements are described with equations assembled into a larger system of equations to model the entire problem, which is then solved with numerical methods. In addition to a background, history, and overview of the steps involved in FEM, this article provides an example of applying FEM to analyze piezoelectricity, the electromechanical phenomenon in which certain materials generate an electric charge in response to mechanical stress or strain.
+The finite element method (FEM) is a numerical technique used to achieve finite element analysis [FEA] (https://www.comsol.com/multiphysics/finite-element-method?parent=physics-pdes-numerical-042-62). More specfiically, FEM computes approximate solutions to boundary and initial-value problems of partial differential equations (PDEs). These PDEs typically arise in engineering and mathematical modeling to model, simulate, and predict the behavior of a structure (or system) in a given physical phenomenon. Examples of such physical phenomenons include heat transfer, mass transport, fluid flow, electromagnetics, and more. Given the governing equations, initial and boundary conditions, material properties of the structure, and the behavior of the structure, FEM constructs a mesh of the structure and divides it into smaller and simpler subdomains, called finite elements, connected by nodes. The behavior of the finite elements are described with equations assembled into a larger system of equations to model the entire problem, which is then solved with numerical methods. In addition to a background and overview of the steps involved in using FEM with FEA software packages, this article provides an example of using FEM to analayze energy harvested from piezoelectric cantilever beams, in which mechanical vibration energy of the beam is converted into electrical energy. [file:///Users/danielcanales/Desktop/Conference_4_ICME2019_BUETBangladesh.pdf].
 
 ## Background
-It is important to first define the following equations, principle, and method often discussed in FEM:
+It is important to first review the background of the following items as they are often discussed in FEM:
 - Partial differential equations
 - Classifications of boundary conditions (BCs) for continuous systems 
 - Principle of Energy Minimization
 
 ### Partial Differential Equations (PDEs)
-A PDE is an equation of partial derivatives of an unknown function with respect to more than one independent variable [txtbook chapter 11]. PDEs can be described by their order and classifications. The order of a PDE is determined by the highest-order partial derivative appearing in the PDE. The classifications of first-order PDEs are linear, non-linear, quasi-linear. For PDEs of second-order and beyond, the classification of a PDE comes down to one of following terms:
+A PDE is an equation of partial derivatives of an unknown function with respect to more than one independent variable [txtbook chapter 11]. PDEs can be described by their order and classifications. The order of a PDE is determined by the highest-order partial derivative appearing in the PDE. The classifications of first-order PDEs are linear, non-linear, and quasi-linear. For PDEs of second-order and beyond, the classification of a PDE comes down to one of following terms:
 - Hyperbolic: PDEs that describe time-dependent, conservative physical processes (e.g. convection) that are not evovling toward a steady state. Their solutions neither grows nor decays over with time.
 - Parabolic: PDEs that describe time-dependent, dissipative physical processes (e.g. diffusion) that are evolving toward a steady state. Their solutions exponentially decay over time.
 - Elliptic: PDEs that describe systems that are time-dependent and have already reached a steady state. 
 
-For example, consider the Euler-Bernoulli Beam PDE representing the transverse displacement, **$u(x,t)$**, of a beam (assume the PDE corresponds to small deflections of a beam that is subject to lateral loads only and ignore the effects of shear deformations and rotary intertia) [https://www.sciencedirect.com/science/article/abs/pii/B9780128185636000171]: 
+For example, consider the Euler-Bernoulli Beam PDE representing the transverse displacement, **$u(x,t)$**, of a beam  over space and time (assume the PDE corresponds to small deflections of a beam that is subject to lateral loads only and ignore the effects of shear deformations and rotary intertia) [https://www.sciencedirect.com/science/article/abs/pii/B9780128185636000171]: 
 
 $$
 EI \dfrac{\partial^4 u}{\partial x^4}= 0
@@ -56,7 +56,7 @@ where
 - **$d_{31}$** is the piezoelectric coupling coefficient.
 -->
 
-In regards to order and classifications, the above PDE is a fourth order, hyperbolic PDE. Note, the PDE is characterized as a hyperbolic function since the beam expresses vibrational behavior which can be analyzed using the wave equation, which is a hyperbolic PDE [https://www.sciencedirect.com/science/article/abs/pii/0022460X91904015]. 
+In regards to order and classifications, the above PDE is a fourth order, hyperbolic PDE. Note, the PDE is characterized as a hyperbolic function since the beam expresses vibrational behavior that can be analyzed using the wave equation (a hyperbolic PDE) [https://www.sciencedirect.com/science/article/abs/pii/0022460X91904015]. 
 
 
 ### Classifications of boundary conditions (BCs) for continuous systems 
@@ -82,6 +82,7 @@ $$
 \left.EI\dfrac{\partial^3 u}{\partial x^3}\right|_{x=L} = m\dfrac{\partial^2 u}{\partial t^2}
 $$
 
+where 
 - **$L$** is the length of the beam
 - **$m$** is the mass of the proof mass
 - **$\dfrac{\partial^2 u}{\partial t^2}$** is the acceleration of the proof mass
@@ -91,12 +92,8 @@ The transverse displacement and its derivative would be equal to zero at the fix
 ### Principle of Energy Minimization
 The primary driving force for FEM related to physical phenomenon is the principle of minimization of energy. When BCs are applied to the PDE of structure, the structure can tehcnically result in many configurations. However, the configuration where the total energy of the structure is at its minimum is typically the chosen configuration [https://www.simscale.com/blog/what-is-finite-element-method/]. Regarding the above example of the Euler-Bernoulli Beam PDE for a clamped cantilever beam with a proof mass at the free end, assume the structure has inital conditions such that the beam is not bent. Now, considering the BCs mentioned above (clamped at one end, and proof mass at the other end), the example's FEM should result in a solution which demonstrates that the beam will transversley vibrate due to the acceleration of the proof mass (e.g. due to gravity) and eventually come to a rest. This is because coming to a rest achieves the minimum total energy of the beam. 
 
-- FEM solvers
-- Examples of types of FEM
-
-
-## Finite Element Method Overview
-From a methmatical point of view, FEM can be divded into five essential steps:
+## Finite Element Method Overview in FEA Workflow
+From a methmatical point of view, the approach of FEM software packages can be divded into five essential steps:
 1) Problem Formulation
 2) Weak Formulation
 3) Discretization
@@ -107,7 +104,10 @@ From a methmatical point of view, FEM can be divded into five essential steps:
   - FEM solvers
   - Examples of types of FEM
 9) Post processing
-10) Mesh Adaptive Refinement
+10) Mesh Adaptive Refinement'
+
+### 1. Problem Formulation
+Problem formulation consists of creating the geometry of your structure, definiting material properties, creating initial and boundary conditions, and defining other conditions such as contact behaviour. 
 
 ## Application of FEM in Analyzing Piezoelectricity 
 The exterior penalty function method has various applications that take advantage of its robust and convenient computation of optimization under constraints. One of the primary limitations on use cases for the exterior method is that the intermediate iterations present infeasible solutions. This can make the method unsuitable for applications such as optimal control, where intermediate results are incorporated into the system’s behavior, and violation of constraints would negatively impact the response [2]. The following are *some* of the most pertinent applications of the exterior penalty method.
