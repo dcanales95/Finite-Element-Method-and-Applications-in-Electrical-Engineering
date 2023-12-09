@@ -100,6 +100,21 @@ From a mathmatical point of view, the below five steps overview how the FEM is w
 4) Solving systems of linear equations
 5) Post-processing
 
+### 1. Model preparation
+Problem formulation consists of creating the geometry of your structure, definiting material properties, creating initial and boundary conditions, defining other conditions such as contact behaviour, and discretisation of the geometry of your structure. 
+
+### 2. Element formulation
+Element formulation is the development of equations for the elements. These equations are set up as the PDE in its weak form. 
+
+### 3. Assembly
+Assembly is obtaining equations for the entire system from the equations for one element.
+
+### 4. Solving systems of linear equations
+The system of linear equations are solved via direct or iterative numerical methods. 
+
+### 5. Post-processing
+Quantities of interst are determined and visualizations of their response are obtained. 
+
 1) Problem Formulation
 2) Weak Formulation
 3) Discretization
@@ -111,9 +126,6 @@ From a mathmatical point of view, the below five steps overview how the FEM is w
   - Examples of types of FEM
 9) Post processing
 10) Mesh Adaptive Refinement'
-
-### 1. Problem Formulation
-Problem formulation consists of creating the geometry of your structure, definiting material properties, creating initial and boundary conditions, and defining other conditions such as contact behaviour. 
 
 ## Application of FEM in Analyzing Piezoelectricity 
 The exterior penalty function method has various applications that take advantage of its robust and convenient computation of optimization under constraints. One of the primary limitations on use cases for the exterior method is that the intermediate iterations present infeasible solutions. This can make the method unsuitable for applications such as optimal control, where intermediate results are incorporated into the system’s behavior, and violation of constraints would negatively impact the response [2]. The following are *some* of the most pertinent applications of the exterior penalty method.
