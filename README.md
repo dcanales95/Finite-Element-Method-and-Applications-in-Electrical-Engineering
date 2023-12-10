@@ -111,28 +111,22 @@ FEA software packages are computer programs that use FEM to analyze how a materi
 ### 1. Model preparation
 Problem formulation consists of creating the geometry of your structure, defining material properties, creating initial and boundary conditions, defining other conditions such as contact behaviour, and discretisation of the geometry of your structure. It is important to note that discretization of the geometry is done behind the scenes. 
 
-To achieve discretization of the sturcture, its PDE needs to be represented in its integral form, also known as its weak form [https://www.simscale.com/blog/what-is-finite-element-method/, https://www.comsol.com/multiphysics/finite-element-method?parent=physics-pdes-numerical-042-62]. Once the weak form has been set up, it can be discretized. In simplist terms, numerical integration schemes are used on the integrations in the weak form to divide its integration domain over the structure into non-overlapping elements with primitive shapes. Therefore, the integral functions from the weak form can be computed approximately as a sum of integrals over all the elements:
+To achieve discretization of the sturcture, its PDE needs to be represented in its integral form, also known as its weak form [https://www.simscale.com/blog/what-is-finite-element-method/, https://www.comsol.com/multiphysics/finite-element-method?parent=physics-pdes-numerical-042-62]. Once the weak form has been set up, it can be discretized. In simplist terms, numerical integration schemes are used on the integrations in the weak form to divide its integration domain over the structure into non-overlapping elements with primitive shapes. Here's a simplified example of the process: the integral functions from the weak form can be computed approximately as a sum of integrals over all the elements:
 
 $$
 \mathrm{I}(\varrho)=\int_{\Omega} \varrho(\mathbf{x}) \mathrm{d} \Omega \approx \int_{\Omega^{\mathrm{h}}} \varrho(\mathbf{x}) \mathrm{d} \Omega=\sum_{\mathrm{e}=0}^{\mathrm{N}-1} \int_{\square^{\mathrm{e}}} \varrho(\mathbf{x}) \mathrm{d} \Omega=\sum_{\mathrm{e}=0}^{\mathrm{N}-1} \mathrm{I}_{\square^e}
 $$
 
-The integrals over the elements can be achieved by first performing a transformation of coordinates. By changing the coordinates of each element from the global coordinate system to that of a local coordinate system, the integration can be done on a reference element which will be the same for all physical elements, as shown below. 
+where **$\varrho(\mathbf{x})$** is the function to be integrated, **$\Omega$** is the integration domain, **$\Omega^{\mathrm{h}}$** is the approximated discretization of **$\Omega$**, and **$\mathrm{I}_{\square^e}$** is the integral over the element **$\square^e$**. The integrals over the elements can be achieved by first performing a transformation of coordinates. By changing the coordinates of each element from the global coordinate system **$\lbrace \mathbf{x}^0, \mathbf{x}^1, \mathbf{x}^2 \rbrace$** to that of a local coordinate system **$\lbrace \xi^0, \xi^1, \xi^2 \rbrace$**, the integration can be done on a reference element which will be the same for all physical elements. For example, the following is the integral of a triangle element after a change of coordinates via the Jacobian method:
 
+$$
+\mathrm{I}_ {\square} = \int_{\square} \varrho(\mathbf{x}) \mathrm{dx}=\int_0^1 \int_0^{1-\xi^0} \varrho(\mathbf{x}(\xi))\|\mathbf{J}\| \mathrm{d} \xi^0 \mathrm{~d} \xi^1
+$$
 
-
-where **$\varrho(\mathbf{x})$** is the function to be integrated, **$\Omega$** is the integration domain, **$\Omega^{\mathrm{h}}$** is the approximated discretization of **$\Omega$**, and **$\mathrm{I}_{\square^e}$** is the integral over the element **$\square^e$**.
-
-<img src="Mesh.png" width="40%" height="30%">
-<img src="IntegrateElement.png" width="40%" height="30%">
-
-the integrand of the weak form is evaluated at a finite set of points and a weighted sum of these values is used to approximate the integral over all the elements [textbook, http://mofem.eng.gla.ac.uk/mofem/html/integration.html]. Guass quadtratures and Newton Cotes quadratures are examples of such integration schemes used to discretize structures. Below are images of the mesh of a beam, examples of quadrature elements (second-order elements) used to mesh geometries. 
-
-<img src="MeshBeam.png" width="40%" height="30%">
-<img src="MeshElements.png" width="40%" height="30%">
 
 ### 2. Element formulation
-Element formulation is the integral over a single element. The first steps to achieve this is to change coordinates for earch element from the original global coordinate system to a local coordinate system using the Jacobian of transformation of cordinates. As done with meshing the geometry, the integral over a single element is computed via numerical integration, thus resulting in a finite set of points and a weighted sum of these values. 
+Element formulation is the integral over a single element. The first steps to achieve this is to change coordinates for earch element from the original global coordinate system to a local coordinate system using the Jacobian of transformation of cordinates. For example, the following is the integral of a triangle element after a change of coordinates via the Jacobian method:
+
 
 ### 3. Assembly
 Assembly is obtaining equations for the entire system from the equations for one element.
