@@ -64,7 +64,13 @@ The FEM of a boundary-value problem includes the following steps [https://davis.
 - Selection of the interpolation functions, also known as shape functions, to provide an approximation of the unknown solution within an element
 - Assembly of interpolation functions into a larger system of equations over the entire domain 
 - Solution of the system of equations
-Considering FEA, after the above last step, you can compute desired parameters of the solution and display the result in form of curves, plots, or color pictures, which are more meaningful and interpretable.
+
+When completing FEA, desired parameters of the solution can be displayed in form of curves, plots, or color pictures, which are more meaningful and interpretable. 
+
+### Discretization of the problem's domain
+The PDE must be represented as an integral equation so that the problem may later by represented as system of. The discretization process begins with transforming the PDE into its weak form [https://www.simscale.com/blog/what-is-finite-element-method/]. 
+
+EM discretizes the domain of the partial differential equation into a mesh of smaller and simpler subdomains, called elements, connected by nodes[https://www.simscale.com/blog/what-is-finite-element-method/]. Considering boundary conditions at the nodes, a system of basis functions are calculated to model these elements. These functions are then assembled into a larger system of equations over the entire domain and solved with numerical methods. 
 
 <!-- 
 # Finite Element Method in Finite Element Analysis Workflow and its Application in Analyzing Energy Harvested from a Piezoelectric Cantilever Beam
