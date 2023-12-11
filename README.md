@@ -3,6 +3,29 @@ Name: Daniel Canales
 Topic: (Special Topics) Finite Element Methods. What is it? Why used? Applications in electrical engineering.*
 Title: Finite Element Method in Finite Element Analysis Workflow and its Application in Analyzing Energy Harvested from a Piezoelectric Cantilever Beam
 ---
+# Introduction to Finite Element Method of Partial Differential Equations and an Example of Its Application in Analyzing Energy Harversting from a Vibrating Piezoelectric Cantilever Beam
+
+## Table of Contents
+
+## Overview
+The finite element method (FEM) is a numerical method used to approximately solve partial differential equations typically arising in enginering and mathematical modeling. The FEM discretizes the domain of the partial differential equation into a mesh of smaller and simpler subdomains, called elements, connected by nodes[https://www.simscale.com/blog/what-is-finite-element-method/]. Considering boundary conditions at the nodes, a system of basis functions are calculated to model these elements. These functions are then assembled into a larger system of equations over the entire domain and solved with numerical methods. 
+
+## Purpose of FEM
+The purpose of FEM is to create a simulation, also known as a finite element analysis (FEA). This simulation is used to provide a structural analysis of how a particular product or design would react under physical phenomenons in the real world. FEA breaks down the entire model into smaller elements within a mesh, which engineers use to test how the different elements of a design interact and perform under physical effects (e.g. vibration, heat, fluid flow, electromagnetic forces, and others) [https://www.autodesk.com/solutions/simulation/finite-element-analysis]. Such simulations are done with software packages that implement FEM to solve the PDEs governing these physical effects. Some common FEA software packages include ANSYS [https://www.ansys.com/], SIMSCALE [https://www.simscale.com/], Abaqus FEA [https://www.3ds.com/products-services/simulia/], and COMSOL Multiphysics [https://www.comsol.com/]. Shown below is a analysis of a cantilever beam under pressure loading solid, shell, and beam elements in Abaqus FEA software. 
+
+<img src="PzCantileverBeam.png" width="40%" height="30%">****
+
+
+
+
+
+In discussing FEM it is important to first review the background of the following items:
+- Partial differential equations
+- Classifications of boundary conditions (BCs) for continuous systems 
+- Principle of Energy Minimization
+- Piezoelectric Effect 
+
+<!-- 
 # Finite Element Method in Finite Element Analysis Workflow and its Application in Analyzing Energy Harvested from a Piezoelectric Cantilever Beam
 
 ## Table of Contents
@@ -37,21 +60,6 @@ EI \dfrac{\partial^4 u}{\partial x^4}= 0
 $$
 
 where **$E$** is the Young's modulus of the beam material and **$I$** is the moment of inertia of the beam's cross-sectional area.
-
-<!-- The PDE representing the electric potential induced across the thickness of the beam, **$v(t)$**, as a function of spatial coordinate **$x$** and time **$t$** is shown below:
-
-$$
-\varepsilon A_p \frac{\partial^2 v}{\partial t^2} + g v = d_{31} A_p \frac{\partial u}{\partial x}
-$$
-
-where 
-
-- **$\varepsilon$** is the permittivity of the piezoelectric material,
-- **$A_p$** is the cross-sectional area of the piezoelectric material
-- **$g$** is the electrical conductance
-- **$v(x,t)$** is the electricl potential induced across the thickness of the beam
-- **$d_{31}$** is the piezoelectric coupling coefficient.
--->
 
 In regards to order and classifications, the above PDE is a fourth order, hyperbolic PDE. Note, the PDE is characterized as a hyperbolic function since the beam expresses vibrational behavior that can be analyzed using the wave equation (a hyperbolic PDE) [https://www.sciencedirect.com/science/article/abs/pii/0022460X91904015]. 
 
@@ -158,4 +166,6 @@ The exterior penalty function method has various applications that take advantag
 11. Bäeck Thomas, Fogel, D., Michalewicz, Z., Coit, D. W., &amp; Smith, A. E. (1995). Section C 5.2: Penalty Functions. In Handbook of Evolutionary Computation, Oxford University Press and Institute of Physics Publishing.
 12. Michalewicz, Z. (1995). Genetic Algorithms, Numerical Optimization, and Constraints. Retrieved December 7, 2022, from https://cs.adelaide.edu.au/~zbyszek/Papers/p16.pdf.
 13. Nocedal, J., &amp; Wright, S. J. (2006). Chapter 17: Penalty and Augmented Lagrangian Methods. In Numerical optimization (pp. 497–528), Springer.
-14. Luenberger, D., &amp; Ye, Y. (2008). Chapter 13: Penalty and Barrier Methods. In Linear and nonlinear programming (4th ed., Ser. Operations Research and Management Science, pp. 409–440), Springer. 
+14. Luenberger, D., &amp; Ye, Y. (2008). Chapter 13: Penalty and Barrier Methods. In Linear and nonlinear programming (4th ed., Ser. Operations Research and Management Science, pp. 409–440), Springer.
+
+-->
