@@ -13,7 +13,7 @@ The finite element method (FEM) is a numerical method used to approximately solv
 ## Purpose of FEM
 The purpose of FEM is to create a simulation, also known as a finite element analysis (FEA). This simulation is used to provide a structural analysis of how a particular product or design would react under physical phenomenons in the real world. FEA breaks down the entire model into smaller elements within a mesh, which engineers use to test how the different elements of a design interact and perform under physical effects (e.g. vibration, heat, fluid flow, electromagnetic forces, and others) [https://www.autodesk.com/solutions/simulation/finite-element-analysis]. Such simulations are done with software packages that implement FEM to solve the PDEs governing these physical effects. Some common FEA software packages include ANSYS [https://www.ansys.com/], SIMSCALE [https://www.simscale.com/], Abaqus FEA [https://www.3ds.com/products-services/simulia/], and COMSOL Multiphysics [https://www.comsol.com/]. Shown below is a analysis of a cantilever beam under pressure loading solid, shell, and beam elements in Abaqus FEA software. 
 
-<img src="PzCantileverBeam.png" width="40%" height="30%">****
+<img src="AbaqusExample.jpg" width="40%" height="30%">****
 
 
 
