@@ -8,22 +8,63 @@ Title: Finite Element Method in Finite Element Analysis Workflow and its Applica
 ## Table of Contents
 
 ## Overview
-The finite element method (FEM) is a numerical method used to approximately solve partial differential equations typically arising in enginering and mathematical modeling. The FEM discretizes the domain of the partial differential equation into a mesh of smaller and simpler subdomains, called elements, connected by nodes[https://www.simscale.com/blog/what-is-finite-element-method/]. Considering boundary conditions at the nodes, a system of basis functions are calculated to model these elements. These functions are then assembled into a larger system of equations over the entire domain and solved with numerical methods. 
+The finite element method (FEM) is a numerical method used to approximately solve boundary-value partial differential equations typically arising in enginering and mathematical modeling. FEM discretizes the domain of the partial differential equation into a mesh of smaller and simpler subdomains, called elements, connected by nodes[https://www.simscale.com/blog/what-is-finite-element-method/]. Considering boundary conditions at the nodes, a system of basis functions are calculated to model these elements. These functions are then assembled into a larger system of equations over the entire domain and solved with numerical methods. 
 
 ## Purpose of FEM
 The purpose of FEM is to create a simulation, also known as a finite element analysis (FEA). This simulation is used to provide a structural analysis of how a particular product or design would react under physical phenomenons in the real world. FEA breaks down the entire model into smaller elements within a mesh, which engineers use to test how the different elements of a design interact and perform under physical effects (e.g. vibration, heat, fluid flow, electromagnetic forces, and others) [https://www.autodesk.com/solutions/simulation/finite-element-analysis]. Such simulations are done with software packages that implement FEM to solve the PDEs governing these physical effects. Some common FEA software packages include ANSYS [https://www.ansys.com/], SIMSCALE [https://www.simscale.com/], Abaqus FEA [https://www.3ds.com/products-services/simulia/], and COMSOL Multiphysics [https://www.comsol.com/]. Shown below is a analysis of a cantilever beam under pressure loading solid, shell, and beam elements in Abaqus FEA software. 
 
-<img src="AbaqusExample.jpg" width="40%" height="30%">****
+<img src="AbaqusExample.jpg" width="40%" height="30%">
 
-
-
-
-
+## Background
 In discussing FEM it is important to first review the background of the following items:
 - Partial differential equations
 - Classifications of boundary conditions (BCs) for continuous systems 
-- Principle of Energy Minimization
-- Piezoelectric Effect 
+
+### Partial Differential Equations (PDEs)
+A PDE is an equation of partial derivatives of an unknown function with respect to more than one independent variable [txtbook chapter 11]. The order of a PDE is determined by the highest-order partial derivative appearing in the PDE. For example, consider the Euler-Bernoulli Beam PDE, a fourth-order PDE, representing the transverse displacement, **$u(x,t)$**, of a beam over space and time (assume the PDE corresponds to small deflections of a beam that is subject to lateral loads only and ignore the effects of shear deformations and rotary intertia) [https://www.sciencedirect.com/science/article/abs/pii/B9780128185636000171]: 
+
+$$
+EI \dfrac{\partial^4 u}{\partial x^4}= 0
+$$
+
+where **$E$** is the Young's modulus of the beam material and **$I$** is the moment of inertia of the beam's cross-sectional area. Now, to limit the possible solutions of the PDE, and any PDE in general, boundary conditions must be provided. In doing so, the PDE becomes a boundary-value problem. 
+
+### Classifications of boundary conditions (BCs) for continuous systems 
+In general, BCs for continuous systems are classified into two types [https://www.jousefmurad.com/fem/the-finite-element-method-beginners-guide/]:
+- Geometric (Essential) BCs: conditions which satisfy geometric constraints
+- Force (Natural) BCs: conditions which satisfy constraints prescribed by forces and moments
+
+Consider the BCs for the above Euler-Bernoulli Beam PDE for a clamped (fixed) piezoelectric cantilever beam with a proof mass at the free end [file:///Users/danielcanales/Desktop/Conference_4_ICME2019_BUETBangladesh.pdf]. Given this specific case, its PDE would have two geometric BCs on the fixed end and two force BCs on the free end with the proof mass [https://www.sciencedirect.com/science/article/abs/pii/B9780128185636000171]. 
+
+<img src="PzCantileverBeam.png" width="40%" height="30%">
+
+The BCs are: 
+
+$$
+\left.u\right|_{x=0}=0
+$$
+
+$$
+\left.\dfrac{\partial u}{\partial x}\right|_{x=0}=0
+$$
+
+$$
+\left.\dfrac{\partial^2 u}{\partial x^2}\right|_{x=L}=0
+$$
+
+$$
+\left.EI\dfrac{\partial^3 u}{\partial x^3}\right|_{x=L} = m\dfrac{\partial^2 u}{\partial t^2}
+$$
+
+where **$L$** is the length of the beam, **$m$** is the mass of the proof mass, and **$\dfrac{\partial^2 u}{\partial t^2}$** is the acceleration of the proof mass. The transverse displacement and its derivative are equal to zero at the fixed end. However, the transverse displacement is equal to the load applied by the weight of the proof mass at the free end. 
+
+## Steps of the Finite Element Method 
+The FEM of a boundary-value problem includes the following steps [https://davis.wpi.edu/~matt/courses/fem/fem.htm]:
+- Discretization of the problem's domain
+- Selection of the interpolation functions, also known as shape functions, to provide an approximation of the unknown solution within an element
+- Assembly of interpolation functions into a larger system of equations over the entire domain 
+- Solution of the system of equations
+Considering FEA, after the above last step, you can compute desired parameters of the solution and display the result in form of curves, plots, or color pictures, which are more meaningful and interpretable.
 
 <!-- 
 # Finite Element Method in Finite Element Analysis Workflow and its Application in Analyzing Energy Harvested from a Piezoelectric Cantilever Beam
