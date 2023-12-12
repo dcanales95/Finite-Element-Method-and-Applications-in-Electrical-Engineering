@@ -15,8 +15,11 @@ The purpose of FEM is to create a simulation, also known as a finite element ana
 
 <img src="AbaqusExample.jpg" width="40%" height="30%">
 
-## Background: Partial Differential Equations and Boundary Conditions
-In discussing FEM it is important to first review the background of PDEs and their boundary conditions: A PDE is an equation of partial derivatives of an unknown function with respect to more than one independent variable [txtbook chapter 11]. The order of a PDE is determined by the highest-order partial derivative appearing in the PDE. For example, consider the Euler-Bernoulli Beam PDE, a fourth-order PDE, representing the transverse displacement, **$u(x,t)$**, of a beam over space and time (with assumptions mentioned in [https://www.sciencedirect.com/science/article/abs/pii/B9780128185636000171]). : 
+## Background: 
+In discussing FEM it is important to first review the background of PDEs, boundary conditions, and numerial integration.
+
+### Partial Differential Equations and Boundary Conditions
+A PDE is an equation of partial derivatives of an unknown function with respect to more than one independent variable [txtbook chapter 11]. The order of a PDE is determined by the highest-order partial derivative appearing in the PDE. For example, consider the Euler-Bernoulli Beam PDE, a fourth-order PDE, representing the transverse displacement, **$u(x,t)$**, of a beam over space and time (with assumptions mentioned in [https://www.sciencedirect.com/science/article/abs/pii/B9780128185636000171]). : 
 
 $$
 EI \dfrac{\partial^4 u}{\partial x^4}= 0
@@ -46,17 +49,108 @@ $$
 
 where **$L$** is the length of the beam, **$m$** is the mass of the proof mass, and **$\dfrac{\partial^2 u}{\partial t^2}$** is the acceleration of the proof mass. Note, with FEM, there are not only BCs for the domain of the problem, but also boundary conditions at the nodes of the problem's mesh. 
 
-## Steps of the Finite Element Method 
-The FEM of a boundary-value problem includes the following steps [https://davis.wpi.edu/~matt/courses/fem/fem.htm]:
-- Discretization of the problem's domain
-- Selection of the interpolation functions, also known as shape functions, to provide an approximation of the unknown solution within an element
-- Assembly of interpolation functions into a larger system of equations over the entire domain 
-- Solution of the system of equations
+### Numerical integration
+Numerical integration is an approximation of the definite integral of a function over a specific interval [notes Chapter 8]. As later shown, it is used in FEM to obtain the system of basis functions that models the elements of the problem's mesh. As shown below, numerical integration assumes the the definitive integral over an interval can be approximated as a quadrature $Q_n(f)$, a weighted sum of finite number of sample values of the integrand function. 
 
-When completing FEA, desired parameters of the solution can be displayed in form of curves, plots, or color pictures, which are more meaningful and interpretable. 
+
+
+of the algebraic system of equations representing the the problem. 
+approximate the solution of a boundary value partidal differential equation (PDE) by solving an algebraic system of equations
+
+
+## Steps of the Finite Element Method 
+The FEM of a boundary-value problem can be generalized into the following steps [https://davis.wpi.edu/~matt/courses/fem/fem.htm, https://www.wias-berlin.de/people/john/LEHRE/NUM_PDE_FUB/num_pde_fub_4.pdf]:
+- Step 1: Discretization of the problem's domain
+- Step 2: Selection of interpolation functions
+- Step 3: Assembly of interpolation functions into a larger system of equations over the entire domain 
+- Step 4: Solution of the system of equations
+
+There are two main approaches for achieving the above steps: the Ritz method and Galerkin method [https://www.wias-berlin.de/people/john/LEHRE/NUM_PDE_FUB/num_pde_fub_4.pdf]. The above steps will be explained with a 1D problem using Galerkin's method [https://www.iue.tuwien.ac.at/phd/orio/node45.html, https://web.iitd.ac.in/~hegde/fem/lecture/lecture5.pdf]. Consider the below problem:
+
+$$
+\begin{equation}
+\tag{1}
+  L[u(\vec{r})]=f(\vec{r})
+\end{equation}
+$$
+
+defined in the problem domain **$\Omega$**, where **$L[\cdot]$** represents a linear differential operator, **$u(\vec{r})$** is the unknown function to be determined, and **$f(\vec{r})$** is a given source function.
 
 ### Discretization of the problem's domain
-The PDE must be represented as an integral equation so that the problem may later by represented as system of. The discretization process begins with transforming the PDE into its weak form [https://www.simscale.com/blog/what-is-finite-element-method/]. 
+The discretization process will turn the problem into a linear system of equations. The process begins with transforming the PDE into an integral form, known as its weak form. [https://www.simscale.com/blog/what-is-finite-element-method/]. In this specific example, the weak form of the problem will not be explicitly derived, but left as a variational formulation. Multiplying a test function **$v(\vec{r})$** to (1) and integrating over the problem domain gives the variational fomrulation [https://vtechworks.lib.vt.edu/server/api/core/bitstreams/a792e408-2fb1-44ef-b862-ad32fb66ec45/content]:
+
+$$
+\begin{equation}
+\tag{2}
+  \int_{\Omega} v(\vec{r}) L[u(\vec{r})] d \Omega=\int_{\Omega} v(\vec{r}) f(\vec{r}) d \Omega
+\end{equation}
+$$
+
+Now that the problem is represented in an integral form, $\Omega$, can be divided into a set of $m$ elements, $T_{1}, T_{2}, \ldots, T_{m}$, which do not overlap. The mesh obtained by such a domain discretization is represented by
+
+$$
+\begin{equation}
+\tag{3}
+  T_{h}(\Omega)=\bigcup_{i=1}^{m} T_{i}
+\end{equation}
+$$
+
+with a set of $N$ grid points. These grid points are the nodes of the problem's mesh. By using numerical integration, the approximate solution, $u_{h}(\vec{r})$, for $u(\vec{r})$ in (2) is given by the following weighted function [C. Johnson, Numerical Solution of Partial Differential Equations by The Finite Element Method.Cambridge University Press, 1987.]:
+
+$$
+\begin{equation}
+\tag{4}
+  u_{h}(\vec{r})=\sum_{i=1}^{N} u_{i} N_{i}(\vec{r})
+\end{equation}
+$$
+
+Therefore, where $N_{i}(\vec{r})$ are the basis functions (often referred to as the shape functions or interpolation functions of the FEM) (focus of Step 2). The approximate solution of (2) is determined by the coefficients $u_{i}$. At node $i$, where the point is given by the coordinates $\vec{r}_{i}$, the basis functions must satisfy the below condition
+
+$$
+\begin{equation}
+\tag{5}
+  N_{j} \left(\vec{r}_{i}\right) = \delta _{ij}, \quad i, j=1, \ldots, N
+\end{equation}
+$$
+
+For reasons that will be discussed in Step 2, the basis functions are typically chosen to be low order polynomials.
+
+By substituting (4) in (2), and choosing $v=N_{j}(\vec{r})$, one obtains
+
+$$
+\begin{equation}
+\tag{6}
+  \int_{\Omega} L\left[\sum_{i=1}^{N} u_{i} N_{i}\right], N_{j} d \Omega = \int_{\Omega} f, N_{j} d \Omega, \quad j=1, \ldots, N
+\end{equation} 
+$$
+
+and since $L[\cdot]$ is a linear operator and the coefficients $u_{i}$ are constants one can write
+
+$$
+\begin{equation}
+\tag{7}
+  \sum_{i=1}^{N} u_{i}\left(L\left[N_{i}\right], N_{j}\right)=\left(f, N_{j}\right), \quad j=1, \ldots, N
+\end{equation}
+$$
+
+Equation (7) is, in fact, a linear system of $N$ equations with $N$ unknowns, $u_{1}, u_{2}, \ldots, u_{N}$. Thus, it can be written in matrix notation as
+
+$$
+\mathbf{A x}=\mathbf{b}
+$$
+
+where $\mathbf{A}=\left(a_{i j}\right)$ is called stiffness matrix, given by the elements
+
+$$
+a_{i j}=\left(L\left[N_{i}\right], N_{j}\right)=\int_{\Omega} L\left[N_{i}(\vec{r})\right] N_{j}(\vec{r}) d \Omega, \quad i, j=1, \ldots, N,
+$$
+
+$\mathbf{x}=\left(u_{1}, \ldots, u_{N}\right)^{T}$ is the vector of unknown coefficients, and $\mathbf{b}=\left(b_{1}, \ldots, b_{N}\right)^{T}$ is the load vector, given by
+
+$$
+b_{j}=\left(f, N_{j}\right)=\int_{\Omega} f(\vec{r}) N_{j}(\vec{r}) d \Omega, \quad j=1, \ldots, N
+$$
+
 
 EM discretizes the domain of the partial differential equation into a mesh of smaller and simpler subdomains, called elements, connected by nodes[https://www.simscale.com/blog/what-is-finite-element-method/]. Considering boundary conditions at the nodes, a system of basis functions are calculated to model these elements. These functions are then assembled into a larger system of equations over the entire domain and solved with numerical methods. 
 
