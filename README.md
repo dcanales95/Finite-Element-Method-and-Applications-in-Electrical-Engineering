@@ -14,7 +14,7 @@ Title: Finite Element Method in Finite Element Analysis Workflow and its Applica
 - [References](#References)
 
 ## Overview
-The finite element method (FEM) is a numerical technique used to approximate the solution of a boundary value partidal differential equation (PDE) by solving an algebraic system of equations. FEM discretizes the domain of the partial differential equation into a mesh of smaller and simpler subdomains, called elements, connected by nodes[https://www.simscale.com/blog/what-is-finite-element-method/]. Considering boundary conditions at the nodes, a system of basis functions are calculated to model these elements. These functions are then assembled into a larger system of equations over the entire domain and solved using numerical methods
+The finite element method (FEM) is a numerical technique used to approximate the solution of a boundary value partidal differential equation (PDE) by solving an algebraic system of equations. FEM discretizes the domain of the partial differential equation into a mesh of smaller and simpler subdomains, called elements, connected by nodes[https://www.simscale.com/blog/what-is-finite-element-method/]. Considering boundary conditions at the nodes, a system of basis functions are calculated to model these elements. These functions are then assembled into a larger system of equations over the entire domain and solved using numerical methods.
 
 ## Purpose of FEM
 The purpose of FEM is to create a simulation, also known as a finite element analysis (FEA). This simulation is used to provide a structural analysis of how a particular product or design would react under physical phenomenons in the real world. FEA breaks down the entire model into smaller elements within a mesh, which engineers use to test how the different elements of a design interact and perform under physical effects (e.g. vibration, heat, fluid flow, electromagnetic forces, and others) [https://www.autodesk.com/solutions/simulation/finite-element-analysis]. Such simulations are done with software packages that implement FEM to solve the PDEs governing these physical effects. Some common FEA software packages include ANSYS [https://www.ansys.com/], SIMSCALE [https://www.simscale.com/], Abaqus FEA [https://www.3ds.com/products-services/simulia/], and COMSOL Multiphysics [https://www.comsol.com/]. Shown below is an example of FEA analysis of a cantilever beam under pressure loading solid, shell, and beam elements in Abaqus FEA software. 
@@ -300,7 +300,11 @@ An example of applying FEM in the field of electrical engineering is harvesting 
 
 A FEM simulation presented in [[https://www.researchgate.net/publication/349626774_Finite_element_analysis_of_piezoelectric_cantilever_beam_using_vibration_for_energy_harvesting_devices?enrichId=rgreq-f5ea3cac4d29a2073657f996d6177b34-XXX&enrichSource=Y292ZXJQYWdlOzM0OTYyNjc3NDtBUzoxMDM1NjAwMzM3NTgwMDMzQDE2MjM5MTc3Njk3MTA%3D&el=1_x_3&_esc=publicationCoverPdf)]] demonstrates the energy harvested from a vibrating piezoelectric cantilever beam with a proof mass on its free end. The beam, shown in Figure 1, was designed in SolidWorks using the dimensions shown below in Table 1, and the FEM simulation was performed in COMSOL Multiphysics. The material properties used in the FEM simulation are shown below in Table 2. The boundary conditions of the simulation were set such that the beam is clamped on one end and the rest of the it was free to vibrate with a mechanical damping set to 0.001 for both layers. The beam was kept at an acceleration vibration sources of $1g$ ($g = 9.8m/s^2$). A physics-controlled mesh with fine element size was performed for the beam, resulting in a voltage output of 4.4 mV at a resonant frequency of 192.25 Hz, as shown in Figure 2 and 3.
 
-
+<img src="PzCantileverBeam.png">
+<img src="DimensionsBeamTable1.png">
+<img src="MaterialPropertiesTable2.png">
+<img src="FEAFigure2.png">
+<img src="FEAFigure3.png">
 
 ## References
 
