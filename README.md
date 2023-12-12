@@ -182,9 +182,10 @@ The interpolation function $N_i$ is the function which interpolates the solution
 
 To obtain the discrete system of equations in (7), the shape functions have to be derived and integrated (shown in (9) and (10)). Such calculations can be significantly simplified by completing a coordinate transformation [https://www.iue.tuwien.ac.at/phd/orio/node48.html, http://mofem.eng.gla.ac.uk/mofem/html/integration.html], as shown below, from the problem's domain coordinate system $(x, y, z)$ to the element's reference (local) coordinate system $(\xi, \eta, \zeta)$. The coordinate transformation can be achieved with the Jacobian transformation method. 
 
-<img src="TetrahedralEment.png" width="40%" height="30%">
+<img src="TetrahedralFiniteElement.png" width="40%" height="30%">
 
-For example, consider a tetrahedron finite element in a cartesian system shown below. Referring back to (6) in the previous step, the element's linear shape function of node $i$ (where $i = 1,..,4$) has the form [153]
+
+For example, as shown in the above image, consider a tetrahedron finite element in a cartesian system shown. Referring back to (6) in the previous step, the element's linear shape function of node $i$ (where $i = 1,..,4$) has the form [153]
 
 $$
 \tag{11}
@@ -260,131 +261,19 @@ where $\boldsymbol{\Lambda}=\left(\mathbf{J}^{T}\right)^{-1}$.
 
 As a result, performing a coordinate transformation significantly simplifies steps (9) and (10) of Galerkin's FEM. The nodal interpation (shape) functions in the transformed coordinates are fixed and known in advance. Therefore, it is not necessary to solve the system of equations formed by (11) for each element of the mesh. Instead, only the Jacobian matrix has to be determined. 
 
-<!-- 
-# Finite Element Method in Finite Element Analysis Workflow and its Application in Analyzing Energy Harvested from a Piezoelectric Cantilever Beam
-
-## Table of Contents
-- [Overview](#Overview)
-- [Background](#Background)
-- [Finite Element Method Overview in FEA Workflow](#Finite-Element-Method-Overview-in-FEA-Workflow)
-- [Common Applications](#Common-Applications)
-- [Formulation](#Formulation)
-- [Penalty Function Options](#Penalty-Function-Options)
-- [References](#References)
-
-## Overview
-The finite element method (FEM) is a numerical technique used to achieve finite element analysis [FEA] (https://www.comsol.com/multiphysics/finite-element-method?parent=physics-pdes-numerical-042-62). More specfiically, FEM computes approximate solutions to boundary and initial-value problems of partial differential equations (PDEs). These PDEs typically arise in engineering and mathematical modeling to model, simulate, and predict the behavior of a structure (or system) in a given physical phenomenon. Examples of such physical phenomenons include heat transfer, mass transport, fluid flow, electromagnetics, and more. Given the governing equations, initial and boundary conditions, material properties of the structure, and the behavior of the structure, FEM constructs a mesh of the structure and divides it into smaller and simpler subdomains, called finite elements, connected by nodes. The behavior of the finite elements are described with equations assembled into a larger system of equations to model the entire problem, which is then solved with numerical methods. In addition to a background and overview of the steps involved in using FEM with FEA software packages, this article provides an example of using FEM to analayze energy harvested from a vibrating piezoelectric cantilever beam.
-
-## Background
-In discussing FEM and its application towards FEA of a piezoelectric cantilever beam, it is important to first review the background of the following items:
-- Partial differential equations
-- Classifications of boundary conditions (BCs) for continuous systems 
-- Principle of Energy Minimization
-- Piezoelectric Effect 
-
-### Partial Differential Equations (PDEs)
-A PDE is an equation of partial derivatives of an unknown function with respect to more than one independent variable [txtbook chapter 11]. PDEs can be described by their order and classifications. The order of a PDE is determined by the highest-order partial derivative appearing in the PDE. The classifications of first-order PDEs are linear, non-linear, and quasi-linear. For PDEs of second-order and beyond, their classification comes down to one of following terms:
-- Hyperbolic: PDEs that describe time-dependent, conservative physical processes (e.g. convection) that are not evovling toward a steady state. Their solutions neither grows nor decays over with time.
-- Parabolic: PDEs that describe time-dependent, dissipative physical processes (e.g. diffusion) that are evolving toward a steady state. Their solutions exponentially decay over time.
-- Elliptic: PDEs that describe systems that are time-dependent and have already reached a steady state. 
-
-For example, consider the Euler-Bernoulli Beam PDE representing the transverse displacement, **$u(x,t)$**, of a beam over space and time (assume the PDE corresponds to small deflections of a beam that is subject to lateral loads only and ignore the effects of shear deformations and rotary intertia) [https://www.sciencedirect.com/science/article/abs/pii/B9780128185636000171]: 
+### Assembly of interpolation functions into a larger system of equations over the entire domain 
+In order to solve the syste of equation in (8), the global stiffness matrix, $\mathbf{A}$, and the load vector, $\mathbf{b}$, have to be determined. However, instead of computing them using (9) and (10), in practice they are computed by summing the contributions from the different elements [C. Johnson, Numerical Solution of Partial Differential Equations by The Finite Element Method.Cambridge University Press, 1987.
+R. E. White, An Introduction to The Finite Element Method with Applications to Nonlinear Problems.John Wiley and Sons, Inc., 1985.
+P. Knabner and L. Angermann, Numerik partieller Differential-gleichungen. Springer, 2000.] according to
 
 $$
-EI \dfrac{\partial^4 u}{\partial x^4}= 0
+\begin{gathered}
+  a_{i j}=\sum_{T \in T_{h}(\Omega)}\left(L\left[N_{i}\right], N_{j}\right)_{T}=\sum_{T \in T_{h}(\Omega)} \int_{T} L\left[N_{i}(\vec{r})\right] N_{j}(\vec{r}) d \Omega, \quad i, j=1, \ldots, N \\
+  b_{j}=\sum_{T \in T_{h}(\Omega)}\left(f, N_{j}\right)_{T}=\sum_{T \in T_{h}(\Omega)} \int_{T} f(\vec{r}) N_{j}(\vec{r}) d \Omega, \quad j=1, \ldots, N .
+\end{gathered}
 $$
 
-where **$E$** is the Young's modulus of the beam material and **$I$** is the moment of inertia of the beam's cross-sectional area.
-
-In regards to order and classifications, the above PDE is a fourth order, hyperbolic PDE. Note, the PDE is characterized as a hyperbolic function since the beam expresses vibrational behavior that can be analyzed using the wave equation (a hyperbolic PDE) [https://www.sciencedirect.com/science/article/abs/pii/0022460X91904015]. 
-
-
-### Classifications of boundary conditions (BCs) for continuous systems 
-In general, BCs for continuous systems are classified into two types [https://www.jousefmurad.com/fem/the-finite-element-method-beginners-guide/]:
-- Geometric (Essential) BCs: conditions which satisfy geometric constraints
-- Force (Natural) BCs: conditions which satisfy constraints prescribed by forces and moments
-
-Consider the BCs for the above Euler-Bernoulli Beam PDE for a clamped (fixed) piezoelectric cantilever beam with a proof mass at the free end [file:///Users/danielcanales/Desktop/Conference_4_ICME2019_BUETBangladesh.pdf]. Given this specific case, its PDE would have two geometric BCs on the fixed end and two force BCs on the free end with the proof mass [https://www.sciencedirect.com/science/article/abs/pii/B9780128185636000171]. 
-
-<img src="PzCantileverBeam.png" width="40%" height="30%">
-
-The BCs are: 
-
-$$
-\left.u\right|_{x=0}=0
-$$
-
-$$
-\left.\dfrac{\partial u}{\partial x}\right|_{x=0}=0
-$$
-
-$$
-\left.\dfrac{\partial^2 u}{\partial x^2}\right|_{x=L}=0
-$$
-
-$$
-\left.EI\dfrac{\partial^3 u}{\partial x^3}\right|_{x=L} = m\dfrac{\partial^2 u}{\partial t^2}
-$$
-
-where **$L$** is the length of the beam, **$m$** is the mass of the proof mass, and **$\dfrac{\partial^2 u}{\partial t^2}$** is the acceleration of the proof mass. The transverse displacement and its derivative are equal to zero at the fixed end. However, the transverse displacement is equal to the load applied by the weight of the proof mass at the free end.
-
-### Principle of Energy Minimization
-The primary driving force for FEM related to physical phenomenon is the principle of minimization of energy. When BCs are applied to the PDE of structure, the structure can tehcnically result in many configurations. However, the configuration where the total energy of the structure is at its minimum is typically the chosen configuration [https://www.simscale.com/blog/what-is-finite-element-method/]. Regarding the above example of the Euler-Bernoulli Beam PDE for a clamped cantilever beam with a proof mass at the free end, assume the structure has inital conditions such that the beam is not bent. Now, considering the BCs mentioned above (clamped at one end, and proof mass at the other end), the example's FEM should result in a solution which demonstrates that the beam will transversley vibrate due to the acceleration of the proof mass (e.g. due to gravity) and eventually come to a rest. This is because coming to a rest achieves the minimum total energy of the beam. 
-
-### Piezoelectric Effect
-The piezoelectric effect is the ability for a piezoelectric material to generate electric charge density in response to a mechanical struss, such  as pressure, vibration, or force [file:///Users/danielcanales/Desktop/Conference_4_ICME2019_BUETBangladesh.pdf]. In the field of electrical engineering, this piezoelectric mechanism is a method used to build energy harvesting systems [Bhuyan MS, Majlis BY, Othman M, Ali SH, Islam MS. Development of a Fluid Actuated Piezoelectric Micro
-Energy Harvester: Finite Element Modeling Simulation and Analysis. Asian Journal of Scientific Research,
-2013; 6(4): pp. 691-702.]. An example of such methods can be seen with the the electric chrage density generated by a piezoelectric cantilever beam. Its mechanism is described by the following piezoelectric constitutive equation [Gong LJ, Shen X, Li JQ. Experimental investigation of energy harvesting from triple-layer piezoelectric
-bender. In 18th IEEE International Symposium on the Applications of Ferroelectrics 2009 Aug 23 (pp. 1-6).IEEE.] :
-
-$$
-D_3=d_{31} T_1+\varepsilon_{33}^T E_3
-$$
-
-where **$D_3$** is the electrical charge density, **$d_{31}$** is the piezoelectric strain constant, **$T_1$** is the stress generated in the length direction of the piezoelectric layer, **$\varepsilon_{33}$** is the dielectric constant of the piezoelectric material under constant stress conditions, and **$E_3$** is the electric field developed in the “3” direction. From the above equation, it is clear that the charge density is proportional to the developed stress. 
-
-## Finite Element Method Overview in FEA Workflow
-FEA software packages are computer programs that use FEM to analyze how a material or design responds to certain forces, such as vibration, heat, fluid flow, electromagnetic forces, and other physical effects [https://www.autodesk.com/solutions/simulation/finite-element-analysis]. Some common FEA software packages include ANSYS [https://www.ansys.com/], Abaqus FEA [https://www.3ds.com/products-services/simulia/], COMSOL Multiphysics [https://www.comsol.com/], and SIMSCALE [https://www.simscale.com/]. From a mathmatical point of view, the below five steps overview how the FEM works within these software tools [https://www.jousefmurad.com/fem/the-finite-element-method-beginners-guide/#feaworkflowFFA]:
-1) Model preparation
-2) Element formulation
-3) Assembly
-4) Solving systems of linear equations
-5) Post-processing
-
-### 1. Model preparation
-Problem formulation consists of creating the geometry of your structure, defining material properties, creating initial and boundary conditions, defining other conditions such as contact behaviour, and discretisation of the geometry of your structure. It is important to note that discretization of the geometry is done behind the scenes. 
-
-To achieve discretization of the sturcture, its PDE needs to be represented in its integral form, also known as its weak form [https://www.simscale.com/blog/what-is-finite-element-method/, https://www.comsol.com/multiphysics/finite-element-method?parent=physics-pdes-numerical-042-62]. Once the weak form has been set up, it can be discretized. In simplist terms, numerical integration schemes are used on the integrations in the weak form to divide its integration domain over the structure into non-overlapping elements with primitive shapes. Here's a simplified example of the process: the integral functions from the weak form can be computed approximately as a sum of integrals over all the elements:
-
-$$
-\mathrm{I}(\varrho)=\int_{\Omega} \varrho(\mathbf{x}) \mathrm{d} \Omega \approx \int_{\Omega^{\mathrm{h}}} \varrho(\mathbf{x}) \mathrm{d} \Omega=\sum_{\mathrm{e}=0}^{\mathrm{N}-1} \int_{\square^{\mathrm{e}}} \varrho(\mathbf{x}) \mathrm{d} \Omega=\sum_{\mathrm{e}=0}^{\mathrm{N}-1} \mathrm{I}_{\square^e}
-$$
-
-where **$\varrho(\mathbf{x})$** is the function to be integrated, **$\Omega$** is the integration domain, **$\Omega^{\mathrm{h}}$** is the approximated discretization of **$\Omega$**, and **$\mathrm{I}_{\square^e}$** is the integral over the element **$\square^e$**. The integrals over the elements can be achieved by first performing a transformation of coordinates. By changing the coordinates of each element from the global coordinate system **$\lbrace \mathbf{x}^0, \mathbf{x}^1, \mathbf{x}^2 \rbrace$** to that of a local coordinate system **$\lbrace \xi^0, \xi^1, \xi^2 \rbrace$**, the integration can be done on a reference element which will be the same for all physical elements. For example, the following is the integral of a triangle element after a change of coordinates via the Jacobian method:
-
-$$
-\mathrm{I}_ {\square} = \int_{\square} \varrho(\mathbf{x}) \mathrm{dx}=\int_0^1 \int_0^{1-\xi^0} \varrho(\mathbf{x}(\xi))\|\mathbf{J}\| \mathrm{d} \xi^0 \mathrm{~d} \xi^1
-$$
-
-
-### 2. Element formulation
-Element formulation is the integral over a single element. The first steps to achieve this is to change coordinates for earch element from the original global coordinate system to a local coordinate system using the Jacobian of transformation of cordinates. For example, the following is the integral of a triangle element after a change of coordinates via the Jacobian method:
-
-
-### 3. Assembly
-Assembly is obtaining equations for the entire system from the equations for one element.
-
-### 4. Solving systems of linear equations
-The system of linear equations are solved via direct or iterative numerical methods. 
-
-### 5. Post-processing
-Quantities of interst are determined and visualizations of their response are obtained. 
-
-## Application of FEM in Analyzing Piezoelectricity 
-The exterior penalty function method has various applications that take advantage of its robust and convenient computation of optimization under constraints. One of the primary limitations on use cases for the exterior method is that the intermediate iterations present infeasible solutions. This can make the method unsuitable for applications such as optimal control, where intermediate results are incorporated into the system’s behavior, and violation of constraints would negatively impact the response [2]. The following are *some* of the most pertinent applications of the exterior penalty method.
-
-
-
+Note that $(L\left[N_{i}\right], N_{j})=0$ unless both $N_{i}$ and $N_{j}$ belong to the same element $T$. Thus, the calculations (4.13) and (4.14) can be limited to the nodes of the element $T$, so that $i, j=1, \ldots, N_{V}$, where $N_{V}$ is the number of vertices of the element. In this way, for each element $T \in T_{h}(\Omega)$, a $N_{V} \times N_{V}$ matrix is obtained, which is called element stiffness or nucleus matrix. Thus, the general system matrix, A, can be computed by first computing the nucleus matrices for each $T \in T_{h}(\Omega)$ and then summing the contributions from each element according to (4.13) [152]. The right-hand side vector, $\mathbf{b}$, is computed in the same way. This process of constructing the general system matrix is called assembly [152]. The main advantage of this assembly process is that it greatly simplifies the computation of the system matrix and right-hand side vector, since (4.11) and (4.12) can be easily calculated for each element of the domain discretization.
 
 ## References
 
