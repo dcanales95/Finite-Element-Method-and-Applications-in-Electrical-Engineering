@@ -50,13 +50,17 @@ $$
 where **$L$** is the length of the beam, **$m$** is the mass of the proof mass, and **$\dfrac{\partial^2 u}{\partial t^2}$** is the acceleration of the proof mass. Note, with FEM, there are not only BCs for the domain of the problem, but also boundary conditions at the nodes of the problem's mesh. 
 
 ### Numerical integration
-Numerical integration is an approximation of the definite integral of a function over a specific interval [notes Chapter 8]. As later shown, it is used in FEM to obtain the system of basis functions that models the elements of the problem's mesh. As shown below, numerical integration assumes the the definitive integral over an interval can be approximated as a quadrature $Q_n(f)$, a weighted sum of finite number of sample values of the integrand function. 
+Numerical integration is an approximation of the definite integral of a function over a specific interval [notes Chapter 8]. As shown below, numerical integration assumes the the definitive integral, $I(f)$, over an interval, $[a,b]$, can be approximated as a quadrature rule, $Q_n(f)$, which is a weighted sum of $n$-number of sample values of the integrand function. 
 
+$$
+I(f) = \int_{a}^{b} f(x)dx
+$$
 
+$$
+I(f) \approx Q_n(f) = \sum_{i=1}^n w_i f\left(x_i\right)
+$$
 
-of the algebraic system of equations representing the the problem. 
-approximate the solution of a boundary value partidal differential equation (PDE) by solving an algebraic system of equations
-
+where $x_i$ are called nodes and multipliers $w_i$ are called weights. There are several methods to determine the nodes and weights of the quadrature rule, such as equally spacing the nodes in the given interval (Newton-Cotes quadrature method) or using polynomials to interpolate between the given interval (Gaussian Quadtrature method). In the latter approach, the weights $w_i$ become polynomial functions $w_i(x)$, and they are chosen to maximize the degree of freedom of the resulting rule. In FEM, the Gaussian Quadrature method is used to to obtain the weighted functions, later referred to as the system of basis functions that models the elements of the problem's mesh.
 
 ## Steps of the Finite Element Method 
 The FEM of a boundary-value problem can be generalized into the following steps [https://davis.wpi.edu/~matt/courses/fem/fem.htm, https://www.wias-berlin.de/people/john/LEHRE/NUM_PDE_FUB/num_pde_fub_4.pdf]:
@@ -77,7 +81,7 @@ $$
 defined in the problem domain **$\Omega$**, where **$L[\cdot]$** represents a linear differential operator, **$u(\vec{r})$** is the unknown function to be determined, and **$f(\vec{r})$** is a given source function.
 
 ### Discretization of the problem's domain
-The discretization process will turn the problem into a linear system of equations. The process begins with transforming the PDE into an integral form, known as its weak form. [https://www.simscale.com/blog/what-is-finite-element-method/]. In this specific example, the weak form of the problem will not be explicitly derived, but left as a variational formulation. Multiplying a test function **$v(\vec{r})$** to (1) and integrating over the problem domain gives the variational fomrulation [https://vtechworks.lib.vt.edu/server/api/core/bitstreams/a792e408-2fb1-44ef-b862-ad32fb66ec45/content]:
+The discretization process will turn the problem into a linear system of equations over the entire problem domain. The process begins with transforming the PDE into an integral form, known as its weak form. [https://www.simscale.com/blog/what-is-finite-element-method/]. In this specific example, the weak form of the problem will not be explicitly derived, but left as a variational formulation. Multiplying a test function **$v(\vec{r})$** to (1) and integrating over the problem domain gives the variational fomrulation [https://vtechworks.lib.vt.edu/server/api/core/bitstreams/a792e408-2fb1-44ef-b862-ad32fb66ec45/content]:
 
 $$
 \begin{equation}
@@ -86,73 +90,210 @@ $$
 \end{equation}
 $$
 
-Now that the problem is represented in an integral form, $\Omega$, can be divided into a set of $m$ elements, $T_{1}, T_{2}, \ldots, T_{m}$, which do not overlap. The mesh obtained by such a domain discretization is represented by
+Using the notation $(a, b)=\int_{\Omega} a(\vec{r}) b(\vec{r}) d \Omega$, (2) can be written as
 
 $$
 \begin{equation}
 \tag{3}
-  T_{h}(\Omega)=\bigcup_{i=1}^{m} T_{i}
+  (L[u], v)=(f, v)
 \end{equation}
 $$
 
-with a set of $N$ grid points. These grid points are the nodes of the problem's mesh. By using numerical integration, the approximate solution, $u_{h}(\vec{r})$, for $u(\vec{r})$ in (2) is given by the following weighted function [C. Johnson, Numerical Solution of Partial Differential Equations by The Finite Element Method.Cambridge University Press, 1987.]:
+Now that the problem is represented in an integral form, $\Omega$, can be divided into a set of $m$ elements, $T_{1}, T_{2}, \ldots, T_{m}$, which do not overlap. The mesh obtained by such a domain discretization is represented by
 
 $$
 \begin{equation}
 \tag{4}
-  u_{h}(\vec{r})=\sum_{i=1}^{N} u_{i} N_{i}(\vec{r})
+  T_{h}(\Omega)=\bigcup_{i=1}^{m} T_{i}
 \end{equation}
 $$
 
-Therefore, where $N_{i}(\vec{r})$ are the basis functions (often referred to as the shape functions or interpolation functions of the FEM) (focus of Step 2). The approximate solution of (2) is determined by the coefficients $u_{i}$. At node $i$, where the point is given by the coordinates $\vec{r}_{i}$, the basis functions must satisfy the below condition
+with a set of $N$ grid points. These grid points are the nodes of the problem's mesh. By using numerical integration, the approximate solution, $u_{h}(\vec{r})$, for $u(\vec{r})$ in (3) is given by the following weighted function [C. Johnson, Numerical Solution of Partial Differential Equations by The Finite Element Method.Cambridge University Press, 1987.]:
 
 $$
 \begin{equation}
 \tag{5}
+  u_{h}(\vec{r})=\sum_{i=1}^{N} u_{i} N_{i}(\vec{r})
+\end{equation}
+$$
+
+where $N_{i}(\vec{r})$ are the basis functions. They are often referred to as the shape functions or interpolation functions of the FEM, and will be the focus of Step 2. The approximate solution of (3) is determined by the coefficients $u_{i}$. At node $i$, where the point is given by the coordinates $\vec{r}_{i}$, the basis functions must satisfy the below condition
+
+$$
+\begin{equation}
+\tag{6}
   N_{j} \left(\vec{r}_{i}\right) = \delta _{ij}, \quad i, j=1, \ldots, N
 \end{equation}
 $$
 
 For reasons that will be discussed in Step 2, the basis functions are typically chosen to be low order polynomials.
 
-By substituting (4) in (2), and choosing $v=N_{j}(\vec{r})$, one obtains
-
-$$
-\begin{equation}
-\tag{6}
-  \int_{\Omega} L\left[\sum_{i=1}^{N} u_{i} N_{i}\right], N_{j} d \Omega = \int_{\Omega} f, N_{j} d \Omega, \quad j=1, \ldots, N
-\end{equation} 
-$$
-
-and since $L[\cdot]$ is a linear operator and the coefficients $u_{i}$ are constants one can write
+By substituting (5) in (4), and choosing $v=N_{j}(\vec{r})$, one obtains
 
 $$
 \begin{equation}
 \tag{7}
+  \left(L\left[\sum_{i=1}^{N} u_{i} N_{i}\right], N_{j}\right)=\left(f, N_{j}\right), \quad j=1, \ldots, N
+\end{equation} 
+$$
+
+and since $L[\cdot]$ is a linear operator and the coefficients $u_{i}$ are constants, one can use the product rule in $L[\cdot]$ and then use numerical integration to write
+
+$$
+\begin{equation}
+\tag{8}
   \sum_{i=1}^{N} u_{i}\left(L\left[N_{i}\right], N_{j}\right)=\left(f, N_{j}\right), \quad j=1, \ldots, N
 \end{equation}
 $$
 
-Equation (7) is, in fact, a linear system of $N$ equations with $N$ unknowns, $u_{1}, u_{2}, \ldots, u_{N}$. Thus, it can be written in matrix notation as
+Notice that Equation (8) is a linear system of $N$ equations with $N$ unknowns, $u_{1}, u_{2}, \ldots, u_{N}$. Therefore, (7) can be written in matrix notation as
 
 $$
-\mathbf{A x}=\mathbf{b}
+\begin{equation}
+\tag{8}
+  \mathbf{A x}=\mathbf{b}
+\end{equation}
 $$
 
 where $\mathbf{A}=\left(a_{i j}\right)$ is called stiffness matrix, given by the elements
 
 $$
-a_{i j}=\left(L\left[N_{i}\right], N_{j}\right)=\int_{\Omega} L\left[N_{i}(\vec{r})\right] N_{j}(\vec{r}) d \Omega, \quad i, j=1, \ldots, N,
+\begin{equation}
+\tag{9}
+  a_{i j}=\left(L\left[N_{i}\right], N_{j}\right)=\int_{\Omega} L\left[N_{i}(\vec{r})\right] N_{j}(\vec{r}) d \Omega, \quad i, j=1, \ldots, N,
+\end{equation}
 $$
 
 $\mathbf{x}=\left(u_{1}, \ldots, u_{N}\right)^{T}$ is the vector of unknown coefficients, and $\mathbf{b}=\left(b_{1}, \ldots, b_{N}\right)^{T}$ is the load vector, given by
 
 $$
-b_{j}=\left(f, N_{j}\right)=\int_{\Omega} f(\vec{r}) N_{j}(\vec{r}) d \Omega, \quad j=1, \ldots, N
+\begin{equation}
+\tag{10}
+  b_{j}=\left(f, N_{j}\right)=\int_{\Omega} f(\vec{r}) N_{j}(\vec{r}) d \Omega, \quad j=1, \ldots, N
+\end{equation}
 $$
 
+As a result, by implementing the Galerkin Method, the problem in (1) has been discretized into a system of elements connected at nodes and can be expressed as (8); a system of equations over the entire problem domain. 
 
-EM discretizes the domain of the partial differential equation into a mesh of smaller and simpler subdomains, called elements, connected by nodes[https://www.simscale.com/blog/what-is-finite-element-method/]. Considering boundary conditions at the nodes, a system of basis functions are calculated to model these elements. These functions are then assembled into a larger system of equations over the entire domain and solved with numerical methods. 
+### Selection of interpolation functions
+As mentioned earlier, the shape function $N_i$ is the function which interpolates the solution between the discrete values $u_i$ obtained at the mesh nodes. Therefore, appropriate functions have to be used and, as already mentioned, low order polynomials are typically chosen as shape functions (also mentioned in earlier discuss of numerical integration). 
+
+
+In this work linear shape functions are used.
+
+For three-dimensional finite element simulations it is convenient to discretize the simulation domain using tetrahedrons, as depicted in Figure 4.1. Thus, linear shape functions must be defined for each tetrahedron of the mesh, in order to apply the Galerkin method described in Section 4.1.1.
+
+![](https://cdn.mathpix.com/cropped/2023_12_12_c034fdc06d3e6ebd37c6g-1.jpg?height=1063&width=1908&top_left_y=962&top_left_x=106)
+
+Figure 4.1: Finite element mesh of a three-dimensional interconnect structure discretized with tetrahedrons.
+
+Consider a tetrahedron in a cartesian system as depicted in Figure 4.2(a). The linear shape function of the node $i$ has the form [153]
+
+$$
+N_{i}(x, y, z)=a_{i}+b_{i} x+c_{i} y+d_{i} z,
+$$
+
+where $i=1, \ldots, 4$. The coefficients, $a_{i}, b_{i}, c_{i}$, and $d_{i}$ for each nodal basis function of the tetrahedral element can be calculated considering the condition [152]
+
+$$
+N_{j}\left(\vec{r}_{i}\right)=\delta_{i j}, \quad i, j=1, \ldots, 4
+$$
+
+As a result, a system of 4 equations for the 4 unknown coefficients is obtained. This procedure has to be repeated for all tetrahedrons of the mesh, so that the basis functions of all grid nodes are determined. Furthermore, in order to obtain the discrete system of equations (․9), the shape functions have to be derived and integrated, as shown by (4.11) and (4.12).
+
+![](https://cdn.mathpix.com/cropped/2023_12_12_c034fdc06d3e6ebd37c6g-2.jpg?height=796&width=898&top_left_y=548&top_left_x=169)
+
+(a)
+
+![](https://cdn.mathpix.com/cropped/2023_12_12_c034fdc06d3e6ebd37c6g-2.jpg?height=800&width=898&top_left_y=543&top_left_x=1058)
+
+(b)
+
+Figure: Tetrahedral finite element. (a) Original coordinate system. (b) Transformed coordinate system.
+
+The calculations can be significantly simplified by carring out a coordinate transformation. A tetrahedron in a transformed coordinate system is shown in Figure $4.2(\underline{b})$. Each point $(x, y, z)$ of the tetrahedron in the original coordinate system can be mapped to a corresponding point $(\xi, \eta, \zeta)$ in the transformed coordinate system [155]
+
+$$
+\begin{gathered}
+x=x_{1}+\left(x_{2}-x_{1}\right) \xi+\left(x_{3}-x_{1}\right) \eta+\left(x_{4}-x_{1}\right) \zeta \\
+y=y_{1}+\left(y_{2}-y_{1}\right) \xi+\left(y_{3}-y_{1}\right) \eta+\left(y_{4}-y_{1}\right) \zeta \\
+z=z_{1}+\left(z_{2}-z_{1}\right) \xi+\left(z_{3}-z_{1}\right) \eta+\left(z_{4}-z_{1}\right) \zeta
+\end{gathered}
+$$
+
+which in matrix form leads to the Jacobian matrix
+
+$$
+\mathbf{J}=\left[\begin{array}{ccc}
+x_{2}-x_{1} & x_{3}-x_{1} & x_{4}-x_{1} \\
+y_{2}-y_{1} & y_{3}-y_{1} & y_{4}-y_{1} \\
+z_{2}-z_{1} & z_{3}-z_{1} & z_{4}-z_{1}
+\end{array}\right]
+$$
+
+In this way, the nodal basis functions for the tetrahedron in the transformed coordinate system are given by [155]
+
+$$
+\begin{aligned}
+& N_{1}^{t}(\xi, \eta, \zeta)=1-\xi-\eta-\zeta, \\
+& N_{2}^{t}(\xi, \eta, \zeta)=\xi \\
+& N_{3}^{t}(\xi, \eta, \zeta)=\eta \\
+& N_{4}^{t}(\xi, \eta, \zeta)=\zeta
+\end{aligned}
+$$
+
+These shape functions are rather simple, so that the derivatives and integrals required for the finite element formulation can be readily evaluated in the transformed coordinate system. Given a function $f(x, y, z)$, the gradient in the transformed coordinates is of the form
+
+$$
+\nabla^{t} f=\left[\begin{array}{lll}
+\frac{\partial f}{\partial \xi} & \frac{\partial f}{\partial \eta} & \frac{\partial f}{\partial \zeta}
+\end{array}\right]^{T}
+$$
+
+where the derivatives are calculated via the chain rule by
+
+$$
+\begin{aligned}
+& \frac{\partial f}{\partial \xi}=\frac{\partial f}{\partial x} \frac{\partial x}{\partial \xi}+\frac{\partial f}{\partial y} \frac{\partial y}{\partial \xi}+\frac{\partial f}{\partial z} \frac{\partial z}{\partial \xi} \\
+& \frac{\partial f}{\partial \eta}=\frac{\partial f}{\partial x} \frac{\partial x}{\partial \eta}+\frac{\partial f}{\partial y} \frac{\partial y}{\partial \eta}+\frac{\partial f}{\partial z} \frac{\partial z}{\partial \eta} \\
+& \frac{\partial f}{\partial \zeta}=\frac{\partial f}{\partial x} \frac{\partial x}{\partial \zeta}+\frac{\partial f}{\partial y} \frac{\partial y}{\partial \zeta}+\frac{\partial f}{\partial z} \frac{\partial z}{\partial \zeta}
+\end{aligned}
+$$
+
+These equations can be expressed in matrix notation as
+
+$$
+\left[\begin{array}{l}
+\frac{\partial f}{\partial \xi} \\
+\frac{\partial f}{\partial \eta} \\
+\frac{\partial f}{\partial \zeta}
+\end{array}\right]=\left[\begin{array}{lll}
+\frac{\partial x}{\partial \xi} & \frac{\partial y}{\partial \xi} & \frac{\partial z}{\partial \xi} \\
+\frac{\partial x}{\partial \eta} & \frac{\partial y}{\partial \eta} & \frac{\partial z}{\partial \eta} \\
+\frac{\partial x}{\partial \zeta} & \frac{\partial y}{\partial \zeta} & \frac{\partial z}{\partial \zeta}
+\end{array}\right] \cdot\left[\begin{array}{l}
+\frac{\partial f}{\partial x} \\
+\frac{\partial f}{\partial y} \\
+\frac{\partial f}{\partial z}
+\end{array}\right]
+$$
+
+or
+
+$$
+\nabla^{t} f=\mathbf{J}^{T} \nabla f
+$$
+
+where $\mathbf{J}^{T}$ is the transpose of the Jacobian matrix. Thus, the gradient in the original coordinate system can be calculated using the transformed coordinate gradient by
+
+$$
+\nabla f=\left(\mathbf{J}^{T}\right)^{-1} \nabla^{t} f=\boldsymbol{\Lambda} \nabla^{t} f
+$$
+
+where $\boldsymbol{\Lambda}=\left(\mathbf{J}^{T}\right)^{-1}$.
+
+Performing such a coordinate transformation significantly simplifies the practical implementation of the FEM. The nodal shape functions in the transformed coordinates are fixed and known in advance, thus, it is not necessary to solve the system of equations formed by (4.15) and (4.16) for each element of the mesh. Only the Jacobian matrix has to be determined, and the required calculations for the finite element formulation can be easily evaluated.
+
 
 <!-- 
 # Finite Element Method in Finite Element Analysis Workflow and its Application in Analyzing Energy Harvested from a Piezoelectric Cantilever Beam
