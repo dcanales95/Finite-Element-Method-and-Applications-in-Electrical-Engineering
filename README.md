@@ -304,7 +304,7 @@ A FEM simulation presented in [[https://www.researchgate.net/publication/3496267
 <img src="DimensionsBeamTable1.png">
 <img src="MaterialPropertiesTable2.png">
 <img src="FEAFigure2.png">
-<img src="FEAFigure3.png">
+<img src="FEAFigureFinal.png">
 
 ## References
 
