@@ -6,6 +6,12 @@ Title: Finite Element Method in Finite Element Analysis Workflow and its Applica
 # Introduction to Finite Element Method of Partial Differential Equations and an Example of Its Application in Analyzing Energy Harversting from a Vibrating Piezoelectric Cantilever Beam
 
 ## Table of Contents
+- [Overview](#Overview)
+- [Purpose of FEM](#Purpose-of-FEM)
+- [Background](#Background)
+- [Steps of the Finite Element Method](#Steps-of-the-Finite-Element-Method)
+- [Application of FEM in Analyzing Energy Harversting from a Vibrating Piezoelectric Cantilever Beam](#Application-of-FEM-in-Analyzing-Energy-Harversting-from-a-Vibrating-Piezoelectric-Cantilever-Beam)
+- [References](#References)
 
 ## Overview
 The finite element method (FEM) is a numerical technique used to approximate the solution of a boundary value partidal differential equation (PDE) by solving an algebraic system of equations. FEM discretizes the domain of the partial differential equation into a mesh of smaller and simpler subdomains, called elements, connected by nodes[https://www.simscale.com/blog/what-is-finite-element-method/]. Considering boundary conditions at the nodes, a system of basis functions are calculated to model these elements. These functions are then assembled into a larger system of equations over the entire domain and solved using numerical methods
@@ -283,11 +289,18 @@ Since $(L\left[N_{i}\right], N_{j}) _ {T} =0$ unless both $N_{i}$ and $N_{j}$ be
 Therefore, the main advantage of this assembly process is that it greatly simplifies the computation of the system matrix and right-hand side vector, since (9) and (10) can be easily calculated for each element of the domain discretization.
 
 ### Solution of the system of equations
-Once the matrix equations of global stiffness matrix $\mathbf{A}$ and the load vector $\mathbf{b}$ have been established, the equations are passed onto a FEM solver. Generally speaking, these solvers are numerical methods divided into two types: direct and iterative solvers [https://www.simscale.com/blog/how-to-choose-solvers-for-fem/]. Direct solvers perform a unique sequence of operations on the coefficients of the system. In addition to the degrees of freedom of the problem, the size, sparsity, structure, and distribution of the matrix have an impact on the direct solvers' solution. Common direct solvers include Gaussian elimination, lower–upper (LU) decomposition, Colesky, and QR decomposition. 
+Once the matrix equations of global stiffness matrix $\mathbf{A}$ and the load vector $\mathbf{b}$ have been established, the equations are passed onto a FEM solver. Generally speaking, these solvers are numerical methods divided into two types: direct and iterative solvers [https://www.simscale.com/blog/how-to-choose-solvers-for-fem/]. 
+
+Direct solvers perform a unique sequence of operations on the coefficients of the system. In addition to the degrees of freedom of the problem, the size, sparsity, structure, and distribution of the matrix have an impact on the direct solvers' solution. Common direct solvers include Gaussian elimination, lower–upper (LU) decomposition, Colesky, and QR decomposition. 
 
 On the other hand, iterative solvers begin with an inital guess for the solution and refine it through a series of iterations, converging towards the solution. In addition, iterative solvers use a procedure called “preconditioning”. In simple terms, the condition number of a matrix can be expressed as the ratio of the absolute value of biggest to smallest number in the matrix. As the condition number increases, the equation system becomes less stable, thus highly likely to magnify approximation errors. In addition to the condition number, the convergence of the iterative method has an impact on the iterative solvers' solutions [https://academic.oup.com/ptp/article/10/6/653/1831185]. While beyond the scope of this article, there are many properties of the problem and its system of equations that determine the condition number and convergence of the iterative solver. Common iterative solvers include Conjugate Gradient Method and its variants, Generalized Minimial Residual Methods, and Chebyshev iteration.
 
 ## Application of FEM in Analyzing Energy Harversting from a Vibrating Piezoelectric Cantilever Beam
+An example of applying FEM in the field of electrical engineering is harvesting energy from  piezoelectric structures, a common practice used to power lower-power electronic devices [Liu H,  Tay CJ,  Quan C,  Kobayashi T,  Lee C. Piezoelectric MEMS  energy harvester  for low-frequency vibrations  with  wideband  operation  range  and  steadily  increased  output  power.    Journal  of Microelectromechanical Systems, 2011 Sep 1;20(5):1131-42. ]. In general, when a piezoelectric cantilever beam is physically deformed by pressure, vibration or force, then it will generate electrical charge density, calculated by the piezoelectric constitutive equation in [Gong LJ, Shen X, Li  JQ. Experimental  investigation of energy harvesting from triple-layer piezoelectric bender. In 18th IEEE International Symposium on the Applications of Ferroelectrics 2009 Aug 23 (pp. 1-6). IEEE.]. Maximum energy is harvested when it vibrates at its resonant frequency. 
+
+A FEM simulation presented in [[https://www.researchgate.net/publication/349626774_Finite_element_analysis_of_piezoelectric_cantilever_beam_using_vibration_for_energy_harvesting_devices?enrichId=rgreq-f5ea3cac4d29a2073657f996d6177b34-XXX&enrichSource=Y292ZXJQYWdlOzM0OTYyNjc3NDtBUzoxMDM1NjAwMzM3NTgwMDMzQDE2MjM5MTc3Njk3MTA%3D&el=1_x_3&_esc=publicationCoverPdf)]] demonstrates the energy harvested from a vibrating piezoelectric cantilever beam with a proof mass on its free end. The beam, shown in Figure 1, was designed in SolidWorks using the dimensions shown below in Table 1, and the FEM simulation was performed in COMSOL Multiphysics. The material properties used in the FEM simulation are shown below in Table 2. The boundary conditions of the simulation were set such that the beam is clamped on one end and the rest of the it was free to vibrate with a mechanical damping set to 0.001 for both layers. The beam was kept at an acceleration vibration sources of $1g$ ($g = 9.8m/s^2$). A physics-controlled mesh with fine element size was performed for the beam, resulting in a voltage output of 4.4 mV at a resonant frequency of 192.25 Hz, as shown in Figure 2 and 3.
+
+
 
 ## References
 
