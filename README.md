@@ -69,7 +69,7 @@ The FEM of a boundary-value problem can be generalized into the following steps 
 - Step 3: Assembly of interpolation functions into a larger system of equations over the entire domain 
 - Step 4: Solution of the system of equations
 
-There are two main approaches for achieving the above steps: the Ritz method and Galerkin method [https://www.wias-berlin.de/people/john/LEHRE/NUM_PDE_FUB/num_pde_fub_4.pdf]. The above steps will be explained with a 1D problem using Galerkin's method [https://www.iue.tuwien.ac.at/phd/orio/node45.html, https://web.iitd.ac.in/~hegde/fem/lecture/lecture5.pdf]. Consider the below problem:
+There are two main approaches for achieving the above steps: the Ritz method and Galerkin method [https://www.wias-berlin.de/people/john/LEHRE/NUM_PDE_FUB/num_pde_fub_4.pdf]. The above steps will be explained with a 1D problem using Galerkin's method from [https://www.iue.tuwien.ac.at/phd/orio/node45.html]. Consider the below problem:
 
 $$
 \begin{equation}
@@ -180,12 +180,12 @@ The interpolation function $N_i$ is the function which interpolates the solution
 
 <img src="LinearFunctionElements.png" width="40%" height="30%">
 
-To obtain the discrete system of equations in (7), the shape functions have to be derived and integrated (shown in (9) and (10)). Such calculations can be significantly simplified by completing a coordinate transformation [https://www.iue.tuwien.ac.at/phd/orio/node48.html, http://mofem.eng.gla.ac.uk/mofem/html/integration.html], as shown below, from the problem's domain coordinate system $(x, y, z)$ to the element's reference (local) coordinate system $(\xi, \eta, \zeta)$. The coordinate transformation can be achieved with the Jacobian transformation method. 
+To obtain the discrete system of equations in (7), the shape functions have to be derived and integrated (shown in (9) and (10)). Such calculations can be significantly simplified by completing a coordinate transformation [https://www.iue.tuwien.ac.at/phd/orio/node48.html, http://mofem.eng.gla.ac.uk/mofem/html/integration.html], as shown below, from the problem's domain coordinate system $(x, y, z)$ to the element's reference (local) coordinate system $(\xi, \eta, \zeta)$. The coordinate transformation can be achieved with the Jacobian transformation method. An example of this process is discussed below and comes from [https://www.iue.tuwien.ac.at/phd/orio/node48.html].
 
 <img src="TetrahedralFiniteElement.png" width="40%" height="30%">
 
 
-For example, as shown in the above image, consider a tetrahedron finite element in a cartesian system shown. Referring back to (6) in the previous step, the element's linear shape function of node $i$ (where $i = 1,..,4$) has the form [153]
+As shown in the above image, consider a tetrahedron finite element in a cartesian system shown. Referring back to (6) in the previous step, the element's linear shape function of node $i$ (where $i = 1,..,4$) has the form [153]
 
 $$
 \tag{11}
@@ -262,7 +262,7 @@ where $\boldsymbol{\Lambda}=\left(\mathbf{J}^{T}\right)^{-1}$.
 As a result, performing a coordinate transformation significantly simplifies steps (9) and (10) of Galerkin's FEM. The nodal interpation (shape) functions in the transformed coordinates are fixed and known in advance. Therefore, it is not necessary to solve the system of equations formed by (11) for each element of the mesh. Instead, only the Jacobian matrix has to be determined. 
 
 ### Assembly of interpolation functions into a larger system of equations over the entire domain 
-In order to solve the syste of equation in (8), the global stiffness matrix, $\mathbf{A}$, and the load vector, $\mathbf{b}$, have to be determined. As derived below, this solution can be ahieved by completing a process known as assembly, in which $\mathbf{A}$ and $\mathbf{b}$ can be computed by 1) computing their nucleus matrices for each element and then 2) summing their contributions from each element according to (8). The derivation of assembly is discussed below and comes from [https://www.iue.tuwien.ac.at/phd/orio/node47.html].
+In order to solve the syste of equation in (8), the global stiffness matrix, $\mathbf{A}$, and the load vector, $\mathbf{b}$, have to be determined. This solution can be ahieved by completing a process known as assembly, in which $\mathbf{A}$ and $\mathbf{b}$ can be computed by 1) computing their nucleus matrices for each element and then 2) summing their contributions from each element according to (8). The derivation of assembly is discussed below and comes from [https://www.iue.tuwien.ac.at/phd/orio/node47.html].
 
 Instead of computing (8) using (9) and (10), they are computed, in practice, by summing the contributions from the different elements [C. Johnson, Numerical Solution of Partial Differential Equations by The Finite Element Method.Cambridge University Press, 1987.
 R. E. White, An Introduction to The Finite Element Method with Applications to Nonlinear Problems.John Wiley and Sons, Inc., 1985.
@@ -281,6 +281,12 @@ $$
 Since $(L\left[N_{i}\right], N_{j}) _ {T} =0$ unless both $N_{i}$ and $N_{j}$ belong to the same element $T$, the calculations of (18) and (19) can be limited to the nodes of the element $T$, so that $i, j=1, \ldots, N_{V}$, where $N_{V}$ is the number of vertices of the element. Therefore, for each element $T \in T_{h}(\Omega)$, a $N_{V} \times N_{V}$ matrix is obtained, which is called element stiffness or nucleus matrix. Thus, the general system matrix, A, can be computed by first computing the nucleus matrices for each $T \in T_{h}(\Omega)$ and then summing the contributions from each element according to (18). The right-hand side vector, $\mathbf{b}$, is computed similarly. 
 
 Therefore, the main advantage of this assembly process is that it greatly simplifies the computation of the system matrix and right-hand side vector, since (9) and (10) can be easily calculated for each element of the domain discretization.
+
+### Solution of the system of equations
+Once the matrix equations of global stiffness matrix $\mathbf{A}$ and the load vector $\mathbf{b}$ have been established, the equations are passed onto a FEM solver. Generally speaking, these solvers are numerical methods divided into two types: direct and iterative solvers [https://www.simscale.com/blog/how-to-choose-solvers-for-fem/]. Direct solvers perform a unique sequence of operations on the coefficients of the system. Common direct solvers include Gaussian elimination, lower–upper (LU) decomposition, Colesky, and QR decomposition. In addition to the degrees of freedom of the problem, the size, sparsity, structure, and distribution of the matrix have an impact on the direct solvers' solution. 
+
+On the other hand, iterative solvers begin with an inital guess for the solution and refine it through a series of iterations, converging towards the solution. In addition, iterative solvers use a procedure called “preconditioning”. In simple terms, the condition number of a matrix can be expressed as the ratio of the absolute value of biggest to smallest number in the matrix. As the condition number increases, the equation system becomes less stable, thus highly likely to magnify approximation errors. Common iterative solvers include Conjugate Gradient Method and its variants, Generalized Minimial Residual Methods, and Chebyshev iteration. In addition to the condition number, the convergence of the iterative method has an impact on the iterative solvers' solutions [https://academic.oup.com/ptp/article/10/6/653/1831185]. While beyond the scope of this article, there are many properties of the problem and its system of equations that determine the condition number and convergence of the iterative solver. 
+ 
 
 ## References
 
