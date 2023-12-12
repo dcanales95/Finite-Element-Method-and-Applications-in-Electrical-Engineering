@@ -262,18 +262,25 @@ where $\boldsymbol{\Lambda}=\left(\mathbf{J}^{T}\right)^{-1}$.
 As a result, performing a coordinate transformation significantly simplifies steps (9) and (10) of Galerkin's FEM. The nodal interpation (shape) functions in the transformed coordinates are fixed and known in advance. Therefore, it is not necessary to solve the system of equations formed by (11) for each element of the mesh. Instead, only the Jacobian matrix has to be determined. 
 
 ### Assembly of interpolation functions into a larger system of equations over the entire domain 
-In order to solve the syste of equation in (8), the global stiffness matrix, $\mathbf{A}$, and the load vector, $\mathbf{b}$, have to be determined. However, instead of computing them using (9) and (10), in practice they are computed by summing the contributions from the different elements [C. Johnson, Numerical Solution of Partial Differential Equations by The Finite Element Method.Cambridge University Press, 1987.
+In order to solve the syste of equation in (8), the global stiffness matrix, $\mathbf{A}$, and the load vector, $\mathbf{b}$, have to be determined. As derived below, this solution can be ahieved by completing a process known as assembly, in which $\mathbf{A}$ and $\mathbf{b}$ can be computed by 1) computing their nucleus matrices for each element and then 2) summing their contributions from each element according to (8). The derivation of assembly is discussed below and comes from [https://www.iue.tuwien.ac.at/phd/orio/node47.html].
+
+Instead of computing (8) using (9) and (10), they are computed, in practice, by summing the contributions from the different elements [C. Johnson, Numerical Solution of Partial Differential Equations by The Finite Element Method.Cambridge University Press, 1987.
 R. E. White, An Introduction to The Finite Element Method with Applications to Nonlinear Problems.John Wiley and Sons, Inc., 1985.
 P. Knabner and L. Angermann, Numerik partieller Differential-gleichungen. Springer, 2000.] according to
 
 $$
-\begin{gathered}
-  a_{i j}=\sum_{T \in T_{h}(\Omega)}\left(L\left[N_{i}\right], N_{j}\right)_{T}=\sum_{T \in T_{h}(\Omega)} \int_{T} L\left[N_{i}(\vec{r})\right] N_{j}(\vec{r}) d \Omega, \quad i, j=1, \ldots, N \\
-  b_{j}=\sum_{T \in T_{h}(\Omega)}\left(f, N_{j}\right)_{T}=\sum_{T \in T_{h}(\Omega)} \int_{T} f(\vec{r}) N_{j}(\vec{r}) d \Omega, \quad j=1, \ldots, N .
-\end{gathered}
+\tag{18}
+a_{i j}=\sum_{T \in T_{h}(\Omega)}\left(L\left[N_{i}\right] , N_{j} \right) _ {T}=\sum_{T \in T_{h}(\Omega)} \int_{T} L\left[N_{i}(\vec{r})\right] N_{j}(\vec{r}) d \Omega, \quad i, j=1, \ldots, N
 $$
 
-Note that $(L\left[N_{i}\right], N_{j})=0$ unless both $N_{i}$ and $N_{j}$ belong to the same element $T$. Thus, the calculations (4.13) and (4.14) can be limited to the nodes of the element $T$, so that $i, j=1, \ldots, N_{V}$, where $N_{V}$ is the number of vertices of the element. In this way, for each element $T \in T_{h}(\Omega)$, a $N_{V} \times N_{V}$ matrix is obtained, which is called element stiffness or nucleus matrix. Thus, the general system matrix, A, can be computed by first computing the nucleus matrices for each $T \in T_{h}(\Omega)$ and then summing the contributions from each element according to (4.13) [152]. The right-hand side vector, $\mathbf{b}$, is computed in the same way. This process of constructing the general system matrix is called assembly [152]. The main advantage of this assembly process is that it greatly simplifies the computation of the system matrix and right-hand side vector, since (4.11) and (4.12) can be easily calculated for each element of the domain discretization.
+$$
+\tag{19}
+b_{j}=\sum_{T \in T_{h}(\Omega)}\left(f, N_{j}\right) _ {T}=\sum_{T \in T_{h}(\Omega)} \int_{T} f(\vec{r}) N_{j}(\vec{r}) d \Omega, \quad j=1, \ldots, N .
+$$
+
+Since $(L\left[N_{i}\right], N_{j}) _ {T} =0$ unless both $N_{i}$ and $N_{j}$ belong to the same element $T$, the calculations of (18) and (19) can be limited to the nodes of the element $T$, so that $i, j=1, \ldots, N_{V}$, where $N_{V}$ is the number of vertices of the element. Therefore, for each element $T \in T_{h}(\Omega)$, a $N_{V} \times N_{V}$ matrix is obtained, which is called element stiffness or nucleus matrix. Thus, the general system matrix, A, can be computed by first computing the nucleus matrices for each $T \in T_{h}(\Omega)$ and then summing the contributions from each element according to (18). The right-hand side vector, $\mathbf{b}$, is computed similarly. 
+
+Therefore, the main advantage of this assembly process is that it greatly simplifies the computation of the system matrix and right-hand side vector, since (9) and (10) can be easily calculated for each element of the domain discretization.
 
 ## References
 
