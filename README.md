@@ -63,9 +63,9 @@ $$
 where $x_i$ are called nodes and multipliers $w_i$ are called weights. There are several methods to determine the nodes and weights of the quadrature rule, such as equally spacing the nodes in the given interval (Newton-Cotes quadrature method) or using polynomials to interpolate between the given interval (Gaussian Quadtrature method). In the latter approach, the weights $w_i$ become polynomial functions $w_i(x)$, and they are chosen to maximize the degree of freedom of the resulting rule. In FEM, the Gaussian Quadrature method is used to to obtain the weighted functions, later referred to as the system of basis functions that models the elements of the problem's mesh.
 
 ## Steps of the Finite Element Method 
-The FEM of a boundary-value problem can be generalized into the following steps [https://davis.wpi.edu/~matt/courses/fem/fem.htm, https://www.wias-berlin.de/people/john/LEHRE/NUM_PDE_FUB/num_pde_fub_4.pdf]:
+The FEM of a boundary-value problem can be generalized into the following steps [https://davis.wpi.edu/~matt/courses/fem/fem.htm, https://www.wias-berlin.de/people/john/LEHRE/NUM_PDE_FUB/num_pde_fub_4.pdf, https://www.iue.tuwien.ac.at/phd/orio/node48.html]:
 - Step 1: Discretization of the problem's domain
-- Step 2: Selection of interpolation functions
+- Step 2: Coordinate transofrmation of interpolation functions
 - Step 3: Assembly of interpolation functions into a larger system of equations over the entire domain 
 - Step 4: Solution of the system of equations
 
@@ -122,7 +122,7 @@ where $N_{i}(\vec{r})$ are the basis functions. They are often referred to as th
 $$
 \begin{equation}
 \tag{6}
-  N_{j} \left(\vec{r}_{i}\right) = \delta _{ij}, \quad i, j=1, \ldots, N
+  N_{i} \left(\vec{r}_{i}\right) = \delta _{ij}, \quad i, j=1, \ldots, N
 \end{equation}
 $$
 
@@ -175,65 +175,26 @@ $$
 
 As a result, by implementing the Galerkin Method, the problem in (1) has been discretized into a system of elements connected at nodes and can be expressed as (8); a system of equations over the entire problem domain. 
 
-### Selection of interpolation functions
-As mentioned earlier, the shape function $N_i$ is the function which interpolates the solution between the discrete values $u_i$ obtained at the mesh nodes. Therefore, appropriate functions have to be used and, as already mentioned, low order polynomials are typically chosen as shape functions (also mentioned in earlier discuss of numerical integration). 
+### Coordinate transformation of interpolation functions
+The interpolation function $N_i$ is the function which interpolates the solution between the discrete values $u_i$ obtained at the mesh nodes. Therefore, the interpolation functions dictacte the formulation of elements. As mentioned earlier, low order polynomials, known as shape functions, are typically chosen for the interpolation functions. Shown below are common elements of linear functions in 2D and 3D [https://www.comsol.com/multiphysics/finite-element-method?parent=physics-pdes-numerical-042-62#triangularno]. 
 
+<img src="LinearFunctionElements.png" width="40%" height="30%">
 
-In this work linear shape functions are used.
+To obtain the discrete system of equations in (7), the shape functions have to be derived and integrated (shown in (9) and (10)). Such calculations can be significantly simplified by completing a coordinate transformation [https://www.iue.tuwien.ac.at/phd/orio/node48.html, http://mofem.eng.gla.ac.uk/mofem/html/integration.html], as shown below, from the problem's domain coordinate system $(x, y, z)$ to the element's reference (local) coordinate system $(\xi, \eta, \zeta)$. The coordinate transformation can be achieved with the Jacobian transformation method. 
 
-For three-dimensional finite element simulations it is convenient to discretize the simulation domain using tetrahedrons, as depicted in Figure 4.1. Thus, linear shape functions must be defined for each tetrahedron of the mesh, in order to apply the Galerkin method described in Section 4.1.1.
+<img src="TetrahedralEment.png" width="40%" height="30%">
 
-![](https://cdn.mathpix.com/cropped/2023_12_12_c034fdc06d3e6ebd37c6g-1.jpg?height=1063&width=1908&top_left_y=962&top_left_x=106)
-
-Figure 4.1: Finite element mesh of a three-dimensional interconnect structure discretized with tetrahedrons.
-
-Consider a tetrahedron in a cartesian system as depicted in Figure 4.2(a). The linear shape function of the node $i$ has the form [153]
+For example, consider a tetrahedron finite element in a cartesian system shown below. Referring back to (6) in the previous step, the element's linear shape function of node $i$ (where $i = 1,..,4$) has the form [153]
 
 $$
+\tag{11}
 N_{i}(x, y, z)=a_{i}+b_{i} x+c_{i} y+d_{i} z,
 $$
 
-where $i=1, \ldots, 4$. The coefficients, $a_{i}, b_{i}, c_{i}$, and $d_{i}$ for each nodal basis function of the tetrahedral element can be calculated considering the condition [152]
+in the problem's domain system. Therefore, in addition to calculating the derivatives and integrals (shown in (9) and (10) of the nodal basis functions for the tetrahedron elements, the above coefficients for each element would have to be calculated as a system of equations, while considering the condition in (6). Thus the process of forming the element becomes quite complex. Now, by using the Jacobian transformation method and expressing the element's reference coordinate system as:
 
 $$
-N_{j}\left(\vec{r}_{i}\right)=\delta_{i j}, \quad i, j=1, \ldots, 4
-$$
-
-As a result, a system of 4 equations for the 4 unknown coefficients is obtained. This procedure has to be repeated for all tetrahedrons of the mesh, so that the basis functions of all grid nodes are determined. Furthermore, in order to obtain the discrete system of equations (․9), the shape functions have to be derived and integrated, as shown by (4.11) and (4.12).
-
-![](https://cdn.mathpix.com/cropped/2023_12_12_c034fdc06d3e6ebd37c6g-2.jpg?height=796&width=898&top_left_y=548&top_left_x=169)
-
-(a)
-
-![](https://cdn.mathpix.com/cropped/2023_12_12_c034fdc06d3e6ebd37c6g-2.jpg?height=800&width=898&top_left_y=543&top_left_x=1058)
-
-(b)
-
-Figure: Tetrahedral finite element. (a) Original coordinate system. (b) Transformed coordinate system.
-
-The calculations can be significantly simplified by carring out a coordinate transformation. A tetrahedron in a transformed coordinate system is shown in Figure $4.2(\underline{b})$. Each point $(x, y, z)$ of the tetrahedron in the original coordinate system can be mapped to a corresponding point $(\xi, \eta, \zeta)$ in the transformed coordinate system [155]
-
-$$
-\begin{gathered}
-x=x_{1}+\left(x_{2}-x_{1}\right) \xi+\left(x_{3}-x_{1}\right) \eta+\left(x_{4}-x_{1}\right) \zeta \\
-y=y_{1}+\left(y_{2}-y_{1}\right) \xi+\left(y_{3}-y_{1}\right) \eta+\left(y_{4}-y_{1}\right) \zeta \\
-z=z_{1}+\left(z_{2}-z_{1}\right) \xi+\left(z_{3}-z_{1}\right) \eta+\left(z_{4}-z_{1}\right) \zeta
-\end{gathered}
-$$
-
-which in matrix form leads to the Jacobian matrix
-
-$$
-\mathbf{J}=\left[\begin{array}{ccc}
-x_{2}-x_{1} & x_{3}-x_{1} & x_{4}-x_{1} \\
-y_{2}-y_{1} & y_{3}-y_{1} & y_{4}-y_{1} \\
-z_{2}-z_{1} & z_{3}-z_{1} & z_{4}-z_{1}
-\end{array}\right]
-$$
-
-In this way, the nodal basis functions for the tetrahedron in the transformed coordinate system are given by [155]
-
-$$
+\tag{12}
 \begin{aligned}
 & N_{1}^{t}(\xi, \eta, \zeta)=1-\xi-\eta-\zeta, \\
 & N_{2}^{t}(\xi, \eta, \zeta)=\xi \\
@@ -242,9 +203,10 @@ $$
 \end{aligned}
 $$
 
-These shape functions are rather simple, so that the derivatives and integrals required for the finite element formulation can be readily evaluated in the transformed coordinate system. Given a function $f(x, y, z)$, the gradient in the transformed coordinates is of the form
+the shape functions for the tetrahedron elements are now rather simple. Therefore, once the coordinate system has been transformed, the derivatives and integrals of the shape functions can be evaluated more easily in the transformed coordinate system. In general terms, given a function $f(x, y, z)$, the gradient in the transformed coordinates can be expressed as
 
 $$
+\tag{13}
 \nabla^{t} f=\left[\begin{array}{lll}
 \frac{\partial f}{\partial \xi} & \frac{\partial f}{\partial \eta} & \frac{\partial f}{\partial \zeta}
 \end{array}\right]^{T}
@@ -253,6 +215,7 @@ $$
 where the derivatives are calculated via the chain rule by
 
 $$
+\tag{14}
 \begin{aligned}
 & \frac{\partial f}{\partial \xi}=\frac{\partial f}{\partial x} \frac{\partial x}{\partial \xi}+\frac{\partial f}{\partial y} \frac{\partial y}{\partial \xi}+\frac{\partial f}{\partial z} \frac{\partial z}{\partial \xi} \\
 & \frac{\partial f}{\partial \eta}=\frac{\partial f}{\partial x} \frac{\partial x}{\partial \eta}+\frac{\partial f}{\partial y} \frac{\partial y}{\partial \eta}+\frac{\partial f}{\partial z} \frac{\partial z}{\partial \eta} \\
@@ -263,6 +226,7 @@ $$
 These equations can be expressed in matrix notation as
 
 $$
+\tag{15}
 \left[\begin{array}{l}
 \frac{\partial f}{\partial \xi} \\
 \frac{\partial f}{\partial \eta} \\
@@ -281,19 +245,20 @@ $$
 or
 
 $$
+\tag{16}
 \nabla^{t} f=\mathbf{J}^{T} \nabla f
 $$
 
-where $\mathbf{J}^{T}$ is the transpose of the Jacobian matrix. Thus, the gradient in the original coordinate system can be calculated using the transformed coordinate gradient by
+where $\mathbf{J}^{T}$ is the transpose of the Jacobian matrix. Therefore, the gradient in the original coordinate system can be calculated using the transformed coordinate gradient by
 
 $$
+\tag{17}
 \nabla f=\left(\mathbf{J}^{T}\right)^{-1} \nabla^{t} f=\boldsymbol{\Lambda} \nabla^{t} f
 $$
 
 where $\boldsymbol{\Lambda}=\left(\mathbf{J}^{T}\right)^{-1}$.
 
-Performing such a coordinate transformation significantly simplifies the practical implementation of the FEM. The nodal shape functions in the transformed coordinates are fixed and known in advance, thus, it is not necessary to solve the system of equations formed by (4.15) and (4.16) for each element of the mesh. Only the Jacobian matrix has to be determined, and the required calculations for the finite element formulation can be easily evaluated.
-
+As a result, performing a coordinate transformation significantly simplifies steps (9) and (10) of Galerkin's FEM. The nodal interpation (shape) functions in the transformed coordinates are fixed and known in advance. Therefore, it is not necessary to solve the system of equations formed by (11) for each element of the mesh. Instead, only the Jacobian matrix has to be determined. 
 
 <!-- 
 # Finite Element Method in Finite Element Analysis Workflow and its Application in Analyzing Energy Harvested from a Piezoelectric Cantilever Beam
