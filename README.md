@@ -56,7 +56,7 @@ $$
 where **$L$** is the length of the beam, **$m$** is the mass of the proof mass, and **$\dfrac{\partial^2 u}{\partial t^2}$** is the acceleration of the proof mass. Note, with FEM, there are not only BCs for the domain of the problem, but also boundary conditions at the nodes of the problem's mesh. 
 
 ### Numerical integration
-Numerical integration is an approximation of the definite integral of a function over a specific interval [6]. As shown below, numerical integration assumes the the definitive integral, $I(f)$, over an interval, $[a,b]$, can be approximated as a quadrature rule, $Q_n(f)$, which is a weighted sum of $n$-number of sample values of the integrand function. 
+Numerical integration is an approximation of the definite integral of a function over a specific interval [6]. As shown below, numerical integration assumes the definitive integral, $I(f)$, over an interval, $[a,b]$, can be approximated as a quadrature rule, $Q_n(f)$, which is a weighted sum of $n$-number of sample values of the integrand function. 
 
 $$
 I(f) = \int_{a}^{b} f(x)dx
@@ -66,12 +66,12 @@ $$
 I(f) \approx Q_n(f) = \sum_{i=1}^n w_i f\left(x_i\right)
 $$
 
-where $x_i$ are called nodes and multipliers $w_i$ are called weights. There are several methods to determine the nodes and weights of the quadrature rule, such as equally spacing the nodes in the given interval (Newton-Cotes quadrature method) or using polynomials to interpolate between the given interval (Gaussian Quadtrature method). In the latter approach, the weights $w_i$ become polynomial functions $w_i(x)$, and they are chosen to maximize the degree of freedom of the resulting rule. In FEM, the Gaussian Quadrature method is used to to obtain the weighted functions, later referred to as the system of basis functions that models the elements of the problem's mesh.
+where $x_i$ are called nodes and multipliers $w_i$ are called weights. There are several methods to determine the nodes and weights of the quadrature rule, such as equally spacing the nodes in the given interval (Newton-Cotes quadrature method) or using polynomials to interpolate between the given interval (Gaussian Quadtrature method). In the latter approach, the weights $w_i$ become polynomial functions $w_i(x)$, and they are chosen to maximize the degree of freedom of the resulting rule. In FEM, the Gaussian Quadrature method is used to obtain the weighted functions, later referred to as the system of basis functions that models the elements of the problem's mesh.
 
 ## Steps of the Finite Element Method 
 The FEM of a boundary-value problem can be generalized into the following steps [9-11]:
 - Step 1: Discretization of the problem's domain
-- Step 2: Coordinate transofrmation of interpolation functions
+- Step 2: Coordinate transformation of interpolation functions
 - Step 3: Assembly of interpolation functions into a larger system of equations over the entire domain 
 - Step 4: Solution of the system of equations
 
@@ -87,7 +87,7 @@ $$
 defined in the problem domain **$\Omega$**, where **$L[\cdot]$** represents a linear differential operator, **$u(\vec{r})$** is the unknown function to be determined, and **$f(\vec{r})$** is a given source function.
 
 ### Discretization of the problem's domain
-The discretization process will turn the problem into a linear system of equations over the entire problem domain, as shown in [12]. The process begins with transforming the PDE into an integral form, known as its weak form [15]. In this specific example, the weak form of the problem will not be explicitly derived, but left as a variational formulation. Multiplying a test function **$v(\vec{r})$** to (1) and integrating over the problem domain gives the variational fomrulation:
+The discretization process will turn the problem into a linear system of equations over the entire problem domain, as shown in [12]. The process begins with transforming the PDE into an integral form, known as its weak form [15]. In this specific example, the weak form of the problem will not be explicitly derived, but left as a variational formulation. Multiplying a test function **$v(\vec{r})$** to (1) and integrating over the problem domain gives the variational formulation:
 
 $$
 \begin{equation}
@@ -182,7 +182,7 @@ $$
 As a result, by implementing the Galerkin Method, the problem in (1) has been discretized into a system of elements connected at nodes and can be expressed as (8); a system of equations over the entire problem domain. 
 
 ### Coordinate transformation of interpolation functions
-The interpolation function $N_i$ is the function which interpolates the solution between the discrete values $u_i$ obtained at the mesh nodes. Therefore, the interpolation functions dictacte the formulation of elements. As mentioned earlier, low order polynomials, known as shape functions, are typically chosen for the interpolation functions. Shown below are common elements of linear functions in 2D and 3D [17]. 
+The interpolation function $N_i$ is the function which interpolates the solution between the discrete values $u_i$ obtained at the mesh nodes. Therefore, the interpolation functions dictate the formulation of elements. As mentioned earlier, low order polynomials, known as shape functions, are typically chosen for the interpolation functions. Shown below are common elements of linear functions in 2D and 3D [17]. 
 
 <img src="LinearFunctionElements.png" width="40%" height="30%">
 
@@ -265,10 +265,10 @@ $$
 
 where $\boldsymbol{\Lambda}=\left(\mathbf{J}^{T}\right)^{-1}$.
 
-As a result, performing a coordinate transformation significantly simplifies steps (9) and (10) of Galerkin's FEM. The nodal interpation (shape) functions in the transformed coordinates are fixed and known in advance. Therefore, it is not necessary to solve the system of equations formed by (11) for each element of the mesh. Instead, only the Jacobian matrix has to be determined. 
+As a result, performing a coordinate transformation significantly simplifies steps (9) and (10) of Galerkin's FEM. The nodal interpolation (shape) functions in the transformed coordinates are fixed and known in advance. Therefore, it is not necessary to solve the system of equations formed by (11) for each element of the mesh. Instead, only the Jacobian matrix has to be determined. 
 
 ### Assembly of interpolation functions into a larger system of equations over the entire domain 
-In order to solve the syste of equation in (8), the global stiffness matrix, $\mathbf{A}$, and the load vector, $\mathbf{b}$, have to be determined. This solution can be ahieved by completing a process known as assembly, in which $\mathbf{A}$ and $\mathbf{b}$ can be computed by 1) computing their nucleus matrices for each element and then 2) summing their contributions from each element according to (8) [14]. The derivation of assembly is discussed below and comes from [14].
+In order to solve the system of equation in (8), the global stiffness matrix, $\mathbf{A}$, and the load vector, $\mathbf{b}$, have to be determined. This solution can be achieved by completing a process known as assembly, in which $\mathbf{A}$ and $\mathbf{b}$ can be computed by 1) computing their nucleus matrices for each element and then 2) summing their contributions from each element according to (8) [14]. The derivation of assembly is discussed below and comes from [14].
 
 Instead of computing (8) using (9) and (10), they are computed, in practice, by summing the contributions from the different elements according to [16, 18, 19]
 
@@ -291,12 +291,12 @@ Once the matrix equations of global stiffness matrix $\mathbf{A}$ and the load v
 
 Direct solvers perform a unique sequence of operations on the coefficients of the system. In addition to the degrees of freedom of the problem, the size, sparsity, structure, and distribution of the matrix have an impact on the direct solvers' solution. Common direct solvers include Gaussian elimination, lower–upper (LU) decomposition, Colesky, and QR decomposition. 
 
-On the other hand, iterative solvers begin with an inital guess for the solution and refine it through a series of iterations, converging towards the solution. In addition, iterative solvers use a procedure called “preconditioning”. In simple terms, the condition number of a matrix can be expressed as the ratio of the absolute value of biggest to smallest number in the matrix. As the condition number increases, the equation system becomes less stable, thus highly likely to magnify approximation errors. In addition to the condition number, the convergence of the iterative method has an impact on the iterative solvers' solutions [21]. While beyond the scope of this article, there are many properties of the problem and its system of equations that determine the condition number and convergence of the iterative solver. Common iterative solvers include Conjugate Gradient Method and its variants, Generalized Minimial Residual Methods, and Chebyshev iteration.
+On the other hand, iterative solvers begin with an initial guess for the solution and refine it through a series of iterations, converging towards the solution. In addition, iterative solvers use a procedure called “preconditioning”. In simple terms, the condition number of a matrix can be expressed as the ratio of the absolute value of biggest to smallest number in the matrix. As the condition number increases, the equation system becomes less stable, thus highly likely to magnify approximation errors. In addition to the condition number, the convergence of the iterative method has an impact on the iterative solvers' solutions [21]. While beyond the scope of this article, there are many properties of the problem and its system of equations that determine the condition number and convergence of the iterative solver. Common iterative solvers include Conjugate Gradient Method and its variants, Generalized Minimal Residual Methods, and Chebyshev iteration.
 
 ## Application of FEM in Analyzing Energy Harversting from a Vibrating Piezoelectric Cantilever Beam
 An example of applying FEM in the field of electrical engineering is harvesting energy from  piezoelectric structures, a common practice used to power lower-power electronic devices [22]. In general, when a piezoelectric cantilever beam is physically deformed by pressure, vibration or force, then it will generate electrical charge density, calculated by the piezoelectric constitutive equation in [23]. Maximum energy is harvested when it vibrates at its resonant frequency. 
 
-A FEM simulation presented in [8] demonstrates the energy harvested from a vibrating piezoelectric cantilever beam with a proof mass on its free end. The beam, shown in Figure 1, was designed in SolidWorks using the dimensions shown below in Table 1, and the FEM simulation was performed in COMSOL Multiphysics. The material properties used in the FEM simulation are shown below in Table 2. The boundary conditions of the simulation were set such that the beam is clamped on one end and the rest of the it was free to vibrate with a mechanical damping set to 0.001 for both layers. The beam was kept at an acceleration vibration sources of $1g$ ($g = 9.8m/s^2$). A physics-controlled mesh with fine element size was performed for the beam, resulting in a voltage output of 4.4 mV at a resonant frequency of 192.25 Hz, as shown in Figure 2 and 3.
+A FEM simulation presented in [8] demonstrates the energy harvested from a vibrating piezoelectric cantilever beam with a proof mass on its free end. The beam, shown in Figure 1, was designed in SolidWorks using the dimensions shown below in Table 1, and the FEM simulation was performed in COMSOL Multiphysics. The material properties used in the FEM simulation are shown below in Table 2. The boundary conditions of the simulation were set such that the beam is clamped on one end and the rest of the it was free to vibrate with a mechanical damping set to 0.001 for both layers. The beam was kept at an acceleration vibration source of $1g$ ($g = 9.8m/s^2$). A physics-controlled mesh with fine element size was performed for the beam, resulting in a voltage output of 4.4 mV at a resonant frequency of 192.25 Hz, as shown in Figure 2 and 3.
 
 <img src="PzCantileverBeam.png">
 <img src="DimensionsBeamTable1.png">
