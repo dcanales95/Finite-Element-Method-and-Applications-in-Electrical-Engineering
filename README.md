@@ -1,9 +1,9 @@
 ---
 Name: Daniel Canales
 Topic: (Special Topics) Finite Element Methods. What is it? Why used? An applications in electrical engineering.*
-Title: Introduction to Finite Element Method of Partial Differential Equations and an Example of Its Application in Analyzing Energy Harversting from a Vibrating Piezoelectric Cantilever Beam
+Title: Introduction to Finite Element Method of Partial Differential Equations and an Example of Its Application in Analyzing Energy Harvesting from a Vibrating Piezoelectric Cantilever Beam
 ---
-# Introduction to Finite Element Method of Partial Differential Equations and an Example of Its Application in Analyzing Energy Harversting from a Vibrating Piezoelectric Cantilever Beam
+# Introduction to Finite Element Method of Partial Differential Equations and an Example of Its Application in Analyzing Energy Harvesting from a Vibrating Piezoelectric Cantilever Beam
 
 ## Table of Contents
 - [Overview](#Overview)
